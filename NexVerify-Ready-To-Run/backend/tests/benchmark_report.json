@@ -1,0 +1,446 @@
+{
+  "total_cases": 31,
+  "correct_predictions": 31,
+  "overall_accuracy": 100.0,
+  "confusion_matrix": {
+    "true_positives": 13,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "true_negatives": 15,
+    "unknown_predictions": 3
+  },
+  "performance_metrics": {
+    "precision": 100.0,
+    "recall": 100.0,
+    "specificity": 100.0,
+    "false_positive_rate": 0.0
+  },
+  "latency_ms": {
+    "mean": 43.72,
+    "min": 0.624,
+    "max": 794.076,
+    "p95": 50.896
+  },
+  "detailed_results": [
+    {
+      "id": "GEN-01",
+      "target": "sbi.bank.in",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 14.110099999925296,
+      "reasons": [
+        "Matched official registry / trusted domain: State Bank of India (SBI)"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-02",
+      "target": "onlinesbi.sbi",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 0.7120000000213622,
+      "reasons": [
+        "Matched official registry / trusted domain: State Bank of India (SBI)"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-03",
+      "target": "hdfcbank.com",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 0.6456000000980566,
+      "reasons": [
+        "Matched official registry / trusted domain: HDFC Bank"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-04",
+      "target": "hdfc.bank.in",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 11.328099999900587,
+      "reasons": [
+        "Matched official registry / trusted domain: HDFC Bank"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-05",
+      "target": "icicibank.com",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 0.6728999996994389,
+      "reasons": [
+        "Matched official registry / trusted domain: ICICI Bank"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-06",
+      "target": "axisbank.com",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 0.650599999971746,
+      "reasons": [
+        "Matched official registry / trusted domain: Axis Bank"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-07",
+      "target": "kotak.com",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 0.6395999998858315,
+      "reasons": [
+        "Matched official registry / trusted domain: Kotak Mahindra Bank"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-08",
+      "target": "razorpay.com",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 0.6238000000848842,
+      "reasons": [
+        "Matched official registry / trusted domain: Razorpay"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-09",
+      "target": "phonepe.com",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 0.6247999999686726,
+      "reasons": [
+        "Matched official registry / trusted domain: PhonePe"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-10",
+      "target": "paytm.com",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 0.6386000000020431,
+      "reasons": [
+        "Matched official registry / trusted domain: Paytm"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-11",
+      "target": "rbi.org.in",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 11.709699999755685,
+      "reasons": [
+        "Matched official registry / trusted domain: Reserve Bank of India"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-12",
+      "target": "uidai.gov.in",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 11.570199999823672,
+      "reasons": [
+        "Matched official registry / trusted domain: UIDAI (Aadhaar)"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-13",
+      "target": "incometax.gov.in",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 11.989700000412995,
+      "reasons": [
+        "Matched official registry / trusted domain: Income Tax Department"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-14",
+      "target": "cybercrime.gov.in",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 15.250099999775557,
+      "reasons": [
+        "Matched official registry / trusted domain: National Cyber Crime Portal"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "GEN-15",
+      "target": "zerodha.com",
+      "expected": "LEGITIMATE",
+      "predicted": "LEGITIMATE",
+      "correct": true,
+      "latency_ms": 1.058399999692483,
+      "reasons": [
+        "Matched official registry / trusted domain: Zerodha"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "FRAUD-01",
+      "target": "sbi-kyc-verification.com",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 30.924600000162172,
+      "reasons": [
+        "Brand impersonation: State Bank of India (SBI)",
+        "Lookalike detected: State Bank of India (SBI)"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-02",
+      "target": "onlinesbi-retail-login.in",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 20.04830000032598,
+      "reasons": [
+        "Brand impersonation: State Bank of India (SBI)",
+        "Lookalike detected: State Bank of India (SBI)"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-03",
+      "target": "hdfc-rewards-redeem.online",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 18.45199999979741,
+      "reasons": [
+        "Brand impersonation: HDFC Bank",
+        "Lookalike detected: HDFC Bank"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-04",
+      "target": "icici-loan-approval.top",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 21.52909999995245,
+      "reasons": [
+        "Brand impersonation: ICICI Bank",
+        "Lookalike detected: ICICI Bank"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-05",
+      "target": "paytm-kyc-verify-agent.site",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 24.834699999701115,
+      "reasons": [
+        "Brand impersonation: Paytm",
+        "Lookalike detected: Paytm"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-06",
+      "target": "phonepe-cashback-reward.vip",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 23.56950000012148,
+      "reasons": [
+        "Brand impersonation: PhonePe",
+        "Lookalike detected: PhonePe"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-07",
+      "target": "razorpay-secure-checkout.xyz",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 24.74690000008195,
+      "reasons": [
+        "Brand impersonation: Razorpay",
+        "Lookalike detected: Razorpay"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-08",
+      "target": "pmkisan-yojana-apply.site",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 25.209800000084215,
+      "reasons": [
+        "Brand impersonation: PM-Kisan",
+        "Lookalike detected: PM-Kisan"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-09",
+      "target": "incometax-refund-claim.cc",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 39.440799999738374,
+      "reasons": [
+        "Brand impersonation: Income Tax Department",
+        "Lookalike detected: Income Tax Department"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-10",
+      "target": "axis-netbanking-secure.biz",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 30.931399999644782,
+      "reasons": [
+        "Brand impersonation: Axis Bank",
+        "Lookalike detected: Axis Bank"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "FRAUD-11",
+      "target": "kotak811-account-unblock.xyz",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 34.080899999935355,
+      "reasons": [
+        "Brand impersonation: Kotak Mahindra Bank",
+        "Lookalike detected: Kotak Mahindra Bank"
+      ],
+      "penalties": [
+        70,
+        55
+      ]
+    },
+    {
+      "id": "GW-01",
+      "target": "http://suspicious-store.com/checkout",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 794.0757999999732,
+      "reasons": [
+        "INSECURE_SENSITIVE_FORM: A sensitive-data form submits over unencrypted HTTP: http://data-thief.ru/steal"
+      ],
+      "penalties": [
+        60
+      ]
+    },
+    {
+      "id": "GW-02",
+      "target": "http://quick-prize-claim.xyz/pay",
+      "expected": "FRAUD",
+      "predicted": "FRAUD",
+      "correct": true,
+      "latency_ms": 44.82850000022154,
+      "reasons": [
+        "INSECURE_SENSITIVE_FORM: A sensitive-data form submits over unencrypted HTTP: http://quick-prize-claim.xyz/submit"
+      ],
+      "penalties": [
+        60
+      ]
+    },
+    {
+      "id": "UNK-01",
+      "target": "fresh-local-bakery-shop.in",
+      "expected": "UNKNOWN",
+      "predicted": "UNKNOWN",
+      "correct": true,
+      "latency_ms": 48.747399999683694,
+      "reasons": [
+        "Uncertain: No official registry proof, no known brand infringement"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "UNK-02",
+      "target": "craft-woodworks-delhi.com",
+      "expected": "UNKNOWN",
+      "predicted": "UNKNOWN",
+      "correct": true,
+      "latency_ms": 40.77240000015081,
+      "reasons": [
+        "Uncertain: No official registry proof, no known brand infringement"
+      ],
+      "penalties": []
+    },
+    {
+      "id": "UNK-03",
+      "target": "independent-consultant-blog.org",
+      "expected": "UNKNOWN",
+      "predicted": "UNKNOWN",
+      "correct": true,
+      "latency_ms": 50.895699999728095,
+      "reasons": [
+        "Uncertain: No official registry proof, no known brand infringement"
+      ],
+      "penalties": []
+    }
+  ]
+}

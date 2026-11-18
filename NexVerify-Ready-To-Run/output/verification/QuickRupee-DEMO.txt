@@ -1,0 +1,71 @@
+NEXVERIFY | PUBLIC EVIDENCE REPORT
+DEMO: simulated evidence, not a real allegation
+Check: nva2997ac9f4f1 | Captured: 2026-11-18T04:50:57Z
+Subject: QuickRupee
+Verdict: HIGH RISK: DO NOT PAY | Score: 0
+An assessment is not proof of fraud, safety, operator identity or legal admissibility.
+
+SCORE DEDUCTIONS
+-20 | PLAY_PUBLISHER | On Google Play the app is published by “Qrovix Tech Solutions”, a different name. | Evidence: E01, E03, E04, E05
+-10 | PLAY_PERMISSIONS | The loan app collects your contacts, photos, which illegal lenders use to harass borrowers. | Evidence: E01, E03, E04, E05
+-60 | INSECURE_SENSITIVE_FORM | A sensitive-data form submits over unencrypted HTTP: http://collector.example/verify | Evidence: E05
+-20 | NEW_DOMAIN | The website was registered only about 4 months ago. | Evidence: E07, E08
+-20 | NEW_COMPANY | The company was incorporated only 3 months ago. | Evidence: E07, E08
+-45 | RBI_NOT_LISTED | No RBI-regulated bank or NBFC lists this loan app. Legal loan apps must be run by one. | Evidence: E02
+-70 | SCAM_REPORTS | 3 news or complaint reports say it cheated people (harassment and extortion). | Evidence: E06
+
+PUBLIC SURFACE INVESTIGATION
+Public pages read: 1 / 1 attempted (maximum 4).
+READ | https://quickrupee-loans.in -> https://quickrupee-loans.in | HTTP 200 | Evidence E05
+UPI handle: 9876543210@paytm
+Observation: UPI handles observed. Handle format does not establish merchant identity or fraud; confirm the recipient in your payment app.
+Observation: External forms can be legitimate payment, login or support integrations. Sensitive destinations need independent verification.
+Observation: Direct installers found. No binary was downloaded, executed, decompiled or malware-scanned; store absence alone is not fraud.
+Form destination: POST http://collector.example/verify | Sensitive fields: account_number   , otp   
+Installer link: https://downloads.example/quickrupee.apk | apk | Binary not analyzed
+script reference: https://checkout.razorpay.com.evil.example/checkout.js | Content not executed or fetched separately
+Scope: Public HTML and HTTP redirects only; server-side code and authenticated checkout are not accessible.
+Scope: No payment, form submission, account login, installer execution or binary reverse engineering performed.
+Scope: Domain registration dates identify domain creation, not app release dates or the identity of the operator.
+Scope: Store listings, HTTPS, UPI and payment gateway references do not certify safety. Content categories are indicators, not findings of fraud.
+
+EVIDENCE MANIFEST
+6d822cff2fa97577683486eb9e4f5e3bfe81e7f23ef144f1a2146ea6d598d639
+E01 | https://quickrupee-loans.in | 2026-11-18T04:50:58Z | SHA-256 14fee78b4a24c57c55a815b1bc8e8a90811f61cff0134dd32eb0ce8c651293bf
+E02 | RBI lookup (Google Search answer + sources) | 2026-11-18T04:50:58Z | SHA-256 2e2d0c663ffe0a8478b2beeb970f49af69e2207720f2c95bb40aa78834cb093d
+E03 | https://play.google.com/store/apps/details?id=com.quickrupee.instantloan&hl=en_IN&gl=IN | 2026-11-18T04:50:58Z | SHA-256 29bf02d14cbb75e66f54b3171514d123400add3ee6942f22ddcda247666317ac
+E04 | https://play.google.com/store/apps/datasafety?id=com.quickrupee.instantloan&hl=en_IN&gl=IN | 2026-11-18T04:50:58Z | SHA-256 d1ef222f8196a1196e6de78387d87446272b9f2b947b72c37ca437a8494ed108
+E05 | https://quickrupee-loans.in | 2026-11-18T04:50:58Z | SHA-256 73dd1bf719d9ce1a3d7f8003a1c6298f50bc42c4b3c26a641a8b296aaa376540
+E06 | News & forum search (answer + sources) | 2026-11-18T04:50:58Z | SHA-256 02a73b519ba2d8eabce2673b905b21bceaddc986fe5c0b9afcbb6f16c03c76e8
+E07 | https://rdap.org/domain/quickrupee-loans.in | 2026-11-18T04:50:58Z | SHA-256 7fd0c1a2949db2859dcf689edab4fcf6f6ff67eeae6108a97c80ff31fa869b62
+E08 | Company registry lookup (Google Search answer + sources) | 2026-11-18T04:50:58Z | SHA-256 7ddbba211835715857802454af86209c2d109d1b7eec84342b32ce613b933686
+
+COMPLAINT DRAFT - REVIEW BEFORE SUBMISSION
+DRAFT ONLY - review facts, complete blanks and submit yourself. No complaint or FIR has been filed.
+SIMULATED DEMO - do not submit as a real allegation.
+Category: Suspected online incident (select the appropriate category on the portal)
+Suspect name / app / channel: QuickRupee
+Links: https://quickrupee-loans.in, https://play.google.com/store/apps/details?id=com.quickrupee.instantloan
+
+Description:
+I want to report “QuickRupee” for review of the concerns listed below. An automated public-records check (NexVerify, 2026-11-18T04:50:57Z UTC) rated it 0/100 (HIGH RISK: DO NOT PAY) for these reasons:
+  1. 3 news or complaint reports say it cheated people (harassment and extortion).
+  2. They claim: Payment & link mechanism. Records show: A sensitive-data form submits over unencrypted HTTP: http://collector.example/verify.
+  3. They claim: Lending app. Records show: No RBI-regulated bank or NBFC lists this loan app. Legal loan apps must be run by one.
+  4. They claim: App presented as “QuickRupee”. Records show: On Google Play the app is published by “Qrovix Tech Solutions”, a different name.
+  5. The website was registered only about 4 months ago.
+  6. The company was incorporated only 3 months ago.
+  7. They claim: Loan app from Play Store. Records show: The loan app collects your contacts, photos, which illegal lenders use to harass borrowers.
+
+Evidence: Attach the NexVerify evidence PDF if you choose (files hashed with SHA-256;
+manifest hash 6d822cff2fa97577683486eb9e4f5e3bfe81e7f23ef144f1a2146ea6d598d639).
+
+What happened to me (facts and timeline): ______________________
+Contact details (enter only on the official portal): ______________________
+Money lost (if any): Rs. ________   Date: __________
+Paid to (UPI ID / account / wallet): ______________________
+Transaction ID / UTR: ______________________
+
+Financial loss: call 1930 promptly and contact your bank. Portal: https://cybercrime.gov.in
+Suspicious link without victim loss: https://cybercrime.gov.in/webform/cyber_suspect.aspx
+Submission requires your review and portal authentication. Save the acknowledgement; complaint is not an automatic FIR.

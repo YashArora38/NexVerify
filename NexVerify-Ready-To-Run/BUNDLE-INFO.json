@@ -1,0 +1,9 @@
+{
+  "platform": "Windows x64",
+  "node_bundled": true,
+  "python_bundled": "3.12.10",
+  "purpose": "local development/demo only",
+  "deployment": false,
+  "blockchain_broadcast": false,
+  "secrets_copied": false
+}

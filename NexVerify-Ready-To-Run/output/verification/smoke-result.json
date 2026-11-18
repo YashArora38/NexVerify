@@ -1,0 +1,12 @@
+{
+  "check_id": "nva2997ac9f4f1",
+  "engine": "proofgrid-3",
+  "verdict": "HIGH_RISK",
+  "pages": {
+    "pages_read": 1,
+    "pages_attempted": 1,
+    "limit": 4,
+    "additional_candidates": 0
+  },
+  "report": "D:\\Downloads\\NexVerify-Ready-To-Run-Windows-2026-11-17\\NexVerify-Ready-To-Run\\output\\verification\\QuickRupee-DEMO.pdf"
+}

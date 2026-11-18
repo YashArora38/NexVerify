@@ -1,0 +1,877 @@
+{
+  "version": "2026.04.1",
+  "description": "Curated official registry of verified Indian banks, NBFCs, government departments, payment platforms, and known fraud networks. Authoritative over LLM inference.",
+  "last_updated": "2026-04-22",
+  "rbi_bank_circular": {
+    "circular_date": "2025-04-22",
+    "subject": "Mandatory migration of scheduled commercial banks and regulated financial institutions to exclusive .bank.in and .fin.in domains",
+    "regulating_agency": "Reserve Bank of India & Institute for Development and Research in Banking Technology (IDRBT)",
+    "restricted_tlds": [
+      {
+        "tld": "bank.in",
+        "description": "Exclusive top-level domain reserved strictly for licensed banks in India. Verified and issued exclusively through IDRBT.",
+        "category": "bank"
+      },
+      {
+        "tld": "fin.in",
+        "description": "Exclusive domain space for RBI-registered NBFCs and regulated financial entities.",
+        "category": "nbfc"
+      },
+      {
+        "tld": "gov.in",
+        "description": "Exclusive Government of India domain space operated by the National Informatics Centre (NIC).",
+        "category": "government"
+      },
+      {
+        "tld": "nic.in",
+        "description": "National Informatics Centre institutional infrastructure domain.",
+        "category": "government"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "brand_id": "sbi",
+      "brand": "State Bank of India (SBI)",
+      "category": "bank",
+      "primary_domain": "sbi.bank.in",
+      "official_domains": [
+        "sbi.bank.in",
+        "sbi.co.in",
+        "statebankofindia.com",
+        "onlinesbi.sbi",
+        "onlinesbi.com",
+        "sbicard.com",
+        "sbimf.com",
+        "sbisecurities.in",
+        "sbigen.in",
+        "sbilife.co.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx",
+      "last_verified": "2026-04-22",
+      "notes": "Primary official portal migrated to sbi.bank.in per RBI 2025 circular. onlinesbi.sbi and sbi.co.in remain authorized secondary legacy portals."
+    },
+    {
+      "brand_id": "hdfc",
+      "brand": "HDFC Bank",
+      "category": "bank",
+      "primary_domain": "hdfc.bank.in",
+      "official_domains": [
+        "hdfc.bank.in",
+        "hdfcbank.bank.in",
+        "hdfcbank.com",
+        "hdfc.com",
+        "hdfcsec.com",
+        "hdfclife.com",
+        "hdfcergo.com",
+        "hdfcfund.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "HDFC Bank official domain."
+    },
+    {
+      "brand_id": "icici",
+      "brand": "ICICI Bank",
+      "category": "bank",
+      "primary_domain": "icici.bank.in",
+      "official_domains": [
+        "icici.bank.in",
+        "icicibank.bank.in",
+        "icicibank.com",
+        "icicidirect.com",
+        "iciciprulife.com",
+        "icicilombard.com",
+        "icicipruamc.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "ICICI Bank official domain."
+    },
+    {
+      "brand_id": "pnb",
+      "brand": "Punjab National Bank (PNB)",
+      "category": "bank",
+      "primary_domain": "pnb.bank.in",
+      "official_domains": [
+        "pnb.bank.in",
+        "pnbindia.in",
+        "pnbnet.net.in",
+        "pnbmetlife.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Punjab National Bank."
+    },
+    {
+      "brand_id": "axis",
+      "brand": "Axis Bank",
+      "category": "bank",
+      "primary_domain": "axis.bank.in",
+      "official_domains": [
+        "axis.bank.in",
+        "axisbank.bank.in",
+        "axisbank.com",
+        "axisdirect.in",
+        "axismf.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Axis Bank official domain."
+    },
+    {
+      "brand_id": "bob",
+      "brand": "Bank of Baroda (BoB)",
+      "category": "bank",
+      "primary_domain": "bob.bank.in",
+      "official_domains": [
+        "bob.bank.in",
+        "bankofbaroda.bank.in",
+        "bankofbaroda.in",
+        "bankofbaroda.com",
+        "barodamf.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Bank of Baroda."
+    },
+    {
+      "brand_id": "kotak",
+      "brand": "Kotak Mahindra Bank",
+      "category": "bank",
+      "primary_domain": "kotak.bank.in",
+      "official_domains": [
+        "kotak.bank.in",
+        "kotakbank.bank.in",
+        "kotak.com",
+        "kotakcherry.com",
+        "kotaksecurities.com",
+        "kotakmf.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Kotak Mahindra Bank."
+    },
+    {
+      "brand_id": "yesbank",
+      "brand": "Yes Bank",
+      "category": "bank",
+      "primary_domain": "yes.bank.in",
+      "official_domains": [
+        "yes.bank.in",
+        "yesbank.bank.in",
+        "yesbank.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Yes Bank."
+    },
+    {
+      "brand_id": "idfc",
+      "brand": "IDFC FIRST Bank",
+      "category": "bank",
+      "primary_domain": "idfcfirst.bank.in",
+      "official_domains": [
+        "idfcfirst.bank.in",
+        "idfcfirstbank.bank.in",
+        "idfcfirstbank.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "IDFC FIRST Bank."
+    },
+    {
+      "brand_id": "canara",
+      "brand": "Canara Bank",
+      "category": "bank",
+      "primary_domain": "canara.bank.in",
+      "official_domains": [
+        "canara.bank.in",
+        "canarabank.bank.in",
+        "canarabank.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Canara Bank."
+    },
+    {
+      "brand_id": "unionbank",
+      "brand": "Union Bank of India",
+      "category": "bank",
+      "primary_domain": "unionbank.bank.in",
+      "official_domains": [
+        "unionbank.bank.in",
+        "unionbankofindia.bank.in",
+        "unionbankofindia.co.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Union Bank of India."
+    },
+    {
+      "brand_id": "indusind",
+      "brand": "IndusInd Bank",
+      "category": "bank",
+      "primary_domain": "indusind.bank.in",
+      "official_domains": [
+        "indusind.bank.in",
+        "indusindbank.bank.in",
+        "indusind.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "IndusInd Bank."
+    },
+    {
+      "brand_id": "boi",
+      "brand": "Bank of India (BOI)",
+      "category": "bank",
+      "primary_domain": "boi.bank.in",
+      "official_domains": [
+        "boi.bank.in",
+        "bankofindia.bank.in",
+        "bankofindia.co.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Bank of India."
+    },
+    {
+      "brand_id": "centralbank",
+      "brand": "Central Bank of India",
+      "category": "bank",
+      "primary_domain": "centralbank.bank.in",
+      "official_domains": [
+        "centralbank.bank.in",
+        "centralbankofindia.co.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Central Bank of India."
+    },
+    {
+      "brand_id": "indianbank",
+      "brand": "Indian Bank",
+      "category": "bank",
+      "primary_domain": "indianbank.bank.in",
+      "official_domains": [
+        "indianbank.bank.in",
+        "indianbank.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Indian Bank."
+    },
+    {
+      "brand_id": "punjabsind",
+      "brand": "Punjab & Sind Bank",
+      "category": "bank",
+      "primary_domain": "punjabandsindbank.bank.in",
+      "official_domains": [
+        "punjabandsindbank.bank.in",
+        "punjabandsindbank.co.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Punjab & Sind Bank."
+    },
+    {
+      "brand_id": "uco",
+      "brand": "UCO Bank",
+      "category": "bank",
+      "primary_domain": "uco.bank.in",
+      "official_domains": [
+        "uco.bank.in",
+        "ucobank.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "UCO Bank."
+    },
+    {
+      "brand_id": "federal",
+      "brand": "Federal Bank",
+      "category": "bank",
+      "primary_domain": "federalbank.bank.in",
+      "official_domains": [
+        "federalbank.bank.in",
+        "federalbank.co.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Federal Bank."
+    },
+    {
+      "brand_id": "rbl",
+      "brand": "RBL Bank",
+      "category": "bank",
+      "primary_domain": "rbl.bank.in",
+      "official_domains": [
+        "rbl.bank.in",
+        "rblbank.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "RBL Bank."
+    },
+    {
+      "brand_id": "idbi",
+      "brand": "IDBI Bank",
+      "category": "bank",
+      "primary_domain": "idbi.bank.in",
+      "official_domains": [
+        "idbi.bank.in",
+        "idbibank.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "IDBI Bank."
+    },
+    {
+      "brand_id": "rbi",
+      "brand": "Reserve Bank of India (RBI)",
+      "category": "regulator",
+      "primary_domain": "rbi.org.in",
+      "official_domains": [
+        "rbi.org.in",
+        "rbi.bank.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Central Bank & banking regulator of India."
+    },
+    {
+      "brand_id": "npci",
+      "brand": "National Payments Corporation of India (NPCI)",
+      "category": "payment_infrastructure",
+      "primary_domain": "npci.org.in",
+      "official_domains": [
+        "npci.org.in",
+        "bhimupi.org.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.npci.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Governing infrastructure for UPI, IMPS, RuPay, and AePS."
+    },
+    {
+      "brand_id": "bhim",
+      "brand": "BHIM UPI",
+      "category": "upi_payment",
+      "primary_domain": "bhimupi.org.in",
+      "official_domains": [
+        "bhimupi.org.in",
+        "npci.org.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.bhimupi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official Bharat Interface for Money app portal by NPCI."
+    },
+    {
+      "brand_id": "uidai",
+      "brand": "Unique Identification Authority of India (Aadhaar)",
+      "category": "government",
+      "primary_domain": "uidai.gov.in",
+      "official_domains": [
+        "uidai.gov.in",
+        "myaadhaar.uidai.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://uidai.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official statutory authority for Aadhaar identification."
+    },
+    {
+      "brand_id": "incometax",
+      "brand": "Income Tax Department of India",
+      "category": "government",
+      "primary_domain": "incometax.gov.in",
+      "official_domains": [
+        "incometax.gov.in",
+        "incometaxindia.gov.in",
+        "incometaxindiaefiling.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.incometax.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official tax filing and PAN service portal."
+    },
+    {
+      "brand_id": "pmkisan",
+      "brand": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+      "category": "government",
+      "primary_domain": "pmkisan.gov.in",
+      "official_domains": [
+        "pmkisan.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://pmkisan.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official central government farmer welfare scheme portal."
+    },
+    {
+      "brand_id": "cybercrime",
+      "brand": "National Cyber Crime Reporting Portal (I4C)",
+      "category": "government",
+      "primary_domain": "cybercrime.gov.in",
+      "official_domains": [
+        "cybercrime.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://cybercrime.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Ministry of Home Affairs citizen portal for reporting financial fraud & 1930 helpline."
+    },
+    {
+      "brand_id": "sebi",
+      "brand": "Securities and Exchange Board of India (SEBI)",
+      "category": "regulator",
+      "primary_domain": "sebi.gov.in",
+      "official_domains": [
+        "sebi.gov.in",
+        "scores.gov.in",
+        "scores.sebi.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.sebi.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Statutory securities and commodity market regulator."
+    },
+    {
+      "brand_id": "mca",
+      "brand": "Ministry of Corporate Affairs (MCA)",
+      "category": "government",
+      "primary_domain": "mca.gov.in",
+      "official_domains": [
+        "mca.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.mca.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official Indian company and LLP registry."
+    },
+    {
+      "brand_id": "parivahan",
+      "brand": "Ministry of Road Transport and Highways (Parivahan)",
+      "category": "government",
+      "primary_domain": "parivahan.gov.in",
+      "official_domains": [
+        "parivahan.gov.in",
+        "sarathi.parivahan.gov.in",
+        "vahan.parivahan.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://parivahan.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official vehicle registration and driving license portal."
+    },
+    {
+      "brand_id": "passport",
+      "brand": "Passport Seva (Ministry of External Affairs)",
+      "category": "government",
+      "primary_domain": "passportindia.gov.in",
+      "official_domains": [
+        "passportindia.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.passportindia.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official Indian passport issuance portal."
+    },
+    {
+      "brand_id": "epfo",
+      "brand": "Employees Provident Fund Organisation (EPFO)",
+      "category": "government",
+      "primary_domain": "epfindia.gov.in",
+      "official_domains": [
+        "epfindia.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.epfindia.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official EPFO provident fund and UAN portal."
+    },
+    {
+      "brand_id": "digilocker",
+      "brand": "DigiLocker",
+      "category": "government",
+      "primary_domain": "digilocker.gov.in",
+      "official_domains": [
+        "digilocker.gov.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.digilocker.gov.in/",
+      "last_verified": "2026-04-22",
+      "notes": "MeitY official digital document wallet."
+    },
+    {
+      "brand_id": "npci",
+      "brand": "National Payments Corporation of India (NPCI)",
+      "category": "upi_infrastructure",
+      "primary_domain": "npci.org.in",
+      "official_domains": [
+        "npci.org.in",
+        "bhimupi.org.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.npci.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Umbrella organization for retail payments and settlement systems in India."
+    },
+    {
+      "brand_id": "bhim",
+      "brand": "BHIM (Bharat Interface for Money)",
+      "category": "upi_payment",
+      "primary_domain": "bhimupi.org.in",
+      "official_domains": [
+        "bhimupi.org.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.bhimupi.org.in/",
+      "last_verified": "2026-04-22",
+      "notes": "NPCI official government-backed UPI payment application."
+    },
+    {
+      "brand_id": "irctc",
+      "brand": "Indian Railway Catering and Tourism Corporation (IRCTC)",
+      "category": "government_psu",
+      "primary_domain": "irctc.co.in",
+      "official_domains": [
+        "irctc.co.in",
+        "irctctourism.com"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.irctc.co.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official Indian Railways online ticketing portal."
+    },
+    {
+      "brand_id": "razorpay",
+      "brand": "Razorpay",
+      "category": "upi_payment",
+      "primary_domain": "razorpay.com",
+      "official_domains": [
+        "razorpay.com",
+        "razorpay.me"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://razorpay.com/",
+      "last_verified": "2026-04-22",
+      "notes": "RBI-authorized Payment Aggregator."
+    },
+    {
+      "brand_id": "paytm",
+      "brand": "Paytm / One97 Communications",
+      "category": "upi_payment",
+      "primary_domain": "paytm.com",
+      "official_domains": [
+        "paytm.com",
+        "paytmbank.com",
+        "paytmmoney.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://paytm.com/",
+      "last_verified": "2026-04-22",
+      "notes": "Paytm consumer and merchant ecosystem."
+    },
+    {
+      "brand_id": "phonepe",
+      "brand": "PhonePe",
+      "category": "upi_payment",
+      "primary_domain": "phonepe.com",
+      "official_domains": [
+        "phonepe.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.phonepe.com/",
+      "last_verified": "2026-04-22",
+      "notes": "Major UPI payment application."
+    },
+    {
+      "brand_id": "googlepay",
+      "brand": "Google Pay",
+      "category": "upi_payment",
+      "primary_domain": "pay.google.com",
+      "official_domains": [
+        "pay.google.com",
+        "gpay.app.goo.gl"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://pay.google.com/",
+      "last_verified": "2026-04-22",
+      "notes": "Google UPI third-party app."
+    },
+    {
+      "brand_id": "cred",
+      "brand": "CRED (Dreamplug Technologies)",
+      "category": "upi_payment",
+      "primary_domain": "cred.club",
+      "official_domains": [
+        "cred.club"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://cred.club/",
+      "last_verified": "2026-04-22",
+      "notes": "Credit card and UPI rewards platform."
+    },
+    {
+      "brand_id": "groww",
+      "brand": "Groww (Nextbillion Technology)",
+      "category": "investment",
+      "primary_domain": "groww.in",
+      "official_domains": [
+        "groww.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://groww.in/",
+      "last_verified": "2026-04-22",
+      "notes": "SEBI registered stock broker and mutual fund distributor."
+    },
+    {
+      "brand_id": "zerodha",
+      "brand": "Zerodha Broking Limited",
+      "category": "investment",
+      "primary_domain": "zerodha.com",
+      "official_domains": [
+        "zerodha.com",
+        "kite.zerodha.com",
+        "console.zerodha.com",
+        "coin.zerodha.com"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://zerodha.com/",
+      "last_verified": "2026-04-22",
+      "notes": "SEBI registered discount stock broker (INZ000031633)."
+    },
+    {
+      "brand_id": "smallcase",
+      "brand": "smallcase Technologies",
+      "category": "investment",
+      "primary_domain": "smallcase.com",
+      "official_domains": [
+        "smallcase.com"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.smallcase.com/",
+      "last_verified": "2026-04-22",
+      "notes": "SEBI registered investment platform."
+    },
+    {
+      "brand_id": "upstox",
+      "brand": "Upstox (RKSV Securities)",
+      "category": "investment",
+      "primary_domain": "upstox.com",
+      "official_domains": [
+        "upstox.com"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://upstox.com/",
+      "last_verified": "2026-04-22",
+      "notes": "SEBI registered stock broker."
+    },
+    {
+      "brand_id": "angelone",
+      "brand": "Angel One Limited",
+      "category": "investment",
+      "primary_domain": "angelone.in",
+      "official_domains": [
+        "angelone.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.angelone.in/",
+      "last_verified": "2026-04-22",
+      "notes": "SEBI registered retail broker."
+    },
+    {
+      "brand_id": "bajajfinserv",
+      "brand": "Bajaj Finserv / Bajaj Finance",
+      "category": "nbfc",
+      "primary_domain": "bajaj.fin.in",
+      "official_domains": [
+        "bajaj.fin.in",
+        "bajajfinserv.in",
+        "bajajfinance.in",
+        "bajajfinservhealth.in",
+        "bajajallianz.com"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://www.bajajfinserv.in/",
+      "last_verified": "2026-04-22",
+      "notes": "RBI-registered NBFC-UL."
+    },
+    {
+      "brand_id": "moneyview",
+      "brand": "Moneyview (Whizdm Innovations)",
+      "category": "nbfc_lending",
+      "primary_domain": "moneyview.in",
+      "official_domains": [
+        "moneyview.in"
+      ],
+      "rbi_regulated": true,
+      "source_url": "https://moneyview.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Regulated lending and credit app platform."
+    },
+    {
+      "brand_id": "amazon",
+      "brand": "Amazon India",
+      "category": "e-commerce",
+      "primary_domain": "amazon.in",
+      "official_domains": [
+        "amazon.in",
+        "amazon.com",
+        "amazon.jobs",
+        "aws.amazon.com",
+        "media-amazon.com"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.amazon.in/",
+      "last_verified": "2026-04-22",
+      "notes": "Official Amazon marketplace and services."
+    },
+    {
+      "brand_id": "flipkart",
+      "brand": "Flipkart",
+      "category": "e-commerce",
+      "primary_domain": "flipkart.com",
+      "official_domains": [
+        "flipkart.com",
+        "flipkartcareers.com"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.flipkart.com/",
+      "last_verified": "2026-04-22",
+      "notes": "Official Flipkart retail platform."
+    },
+    {
+      "brand_id": "meesho",
+      "brand": "Meesho",
+      "category": "e-commerce",
+      "primary_domain": "meesho.com",
+      "official_domains": [
+        "meesho.com",
+        "meesho.io"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.meesho.com/",
+      "last_verified": "2026-04-22",
+      "notes": "Official Meesho e-commerce portal."
+    },
+    {
+      "brand_id": "naukri",
+      "brand": "Naukri.com (Info Edge India)",
+      "category": "jobs",
+      "primary_domain": "naukri.com",
+      "official_domains": [
+        "naukri.com",
+        "naukrigulf.com",
+        "infoedge.in"
+      ],
+      "rbi_regulated": false,
+      "source_url": "https://www.naukri.com/",
+      "last_verified": "2026-04-22",
+      "notes": "Official Indian job portal by Info Edge."
+    }
+  ],
+  "known_scams": [
+    {
+      "pattern_id": "sbi_rewards_phishing",
+      "name": "SBI Fake Rewards / Points Claim Phishing",
+      "indicators": ["sbi-rewards", "onlinesbi-points", "sbi-gift", "sbi-bonus", "sbi-yono-apk"],
+      "known_malicious_domains": [
+        "sbi-rewards-claim.in",
+        "onlinesbi-reward.xyz",
+        "sbi-rewards-redeem.com",
+        "sbi-points-cash.in",
+        "sbi-yono-update.top"
+      ],
+      "modus_operandi": "Victims receive SMS claiming reward points will expire unless claimed via an unauthorized link, which requests net banking credentials and OTP."
+    },
+    {
+      "pattern_id": "pmkisan_fake_apk",
+      "name": "PM Kisan Fake Welfare / Malicious APK Download",
+      "indicators": ["pmkisan-yojana-apk", "pmkisan-installment", "sarkari-yojana-free"],
+      "known_malicious_domains": [
+        "pmkisan-yojana-apk.in",
+        "pm-kisan-16th-installment.in",
+        "sarkari-yojana-free-recharge.in"
+      ],
+      "modus_operandi": "Pretends to offer PM Kisan welfare payments or free government recharges to lure users into installing a malicious APK sideloaded outside Google Play Store."
+    },
+    {
+      "pattern_id": "kbc_lottery_fraud",
+      "name": "KBC / WhatsApp Lucky Draw Lottery Scam",
+      "indicators": ["kbc-lucky-draw", "kbc-lottery", "whatsapp-lottery-winner"],
+      "known_malicious_domains": [
+        "kbc-lucky-draw-winner.in",
+        "kbc-lottery-head-office.com",
+        "kaun-banega-crorepati-winner.xyz"
+      ],
+      "modus_operandi": "Falsely declares user as a 25 Lakh lottery winner and demands upfront GST/processing fees."
+    },
+    {
+      "pattern_id": "wfh_registration_fee",
+      "name": "E-Commerce Part-Time Job / Advance Fee Scam",
+      "indicators": ["amazon-workfromhome", "flipkart-parttime", "pay-registration-fee"],
+      "known_malicious_domains": [
+        "amazon-workfromhome-jobs.top",
+        "flipkart-parttime-earn.in"
+      ],
+      "modus_operandi": "Promises guaranteed daily income for rating products or doing tasks after paying an upfront onboarding fee of 999 or more."
+    },
+    {
+      "pattern_id": "fastcash_predatory_loan",
+      "name": "Illegal Chinese / Instant Loan Extortion Apps",
+      "indicators": ["fastcash-pro", "quickrupee-instant", "urgent-cash-loan", "quickrupee"],
+      "known_malicious_domains": [
+        "fastcash-pro-instant-loan.in",
+        "quickrupee-loans.in",
+        "quickrupee-instantloan.top"
+      ],
+      "modus_operandi": "Unregulated loan APK harvesting contacts and gallery permissions to extort borrowers using morphed images."
+    },
+    {
+      "pattern_id": "bullvanta_fake_adviser",
+      "name": "Unregistered Stock Tips & Guaranteed Return Telegram Scam",
+      "indicators": ["bullvanta", "bullvanta-vip", "bullvanta-signals"],
+      "known_malicious_domains": [
+        "telegram-bullvanta-vip.biz",
+        "bullvantasignals.com",
+        "bullvanta.in"
+      ],
+      "modus_operandi": "Promises fake SEBI registration and 300% guaranteed stock returns on VIP Telegram channels."
+    },
+    {
+      "pattern_id": "hirevexa_fake_internship",
+      "name": "Refundable Training Fee Job / Internship Scam",
+      "indicators": ["hirevexa", "hirevexa-careers"],
+      "known_malicious_domains": [
+        "hirevexa-careers-fee.in",
+        "hirevexa-careers.in"
+      ],
+      "modus_operandi": "Demands upfront payment of registration or training security deposit before issuing an offer letter."
+    }
+  ]
+}

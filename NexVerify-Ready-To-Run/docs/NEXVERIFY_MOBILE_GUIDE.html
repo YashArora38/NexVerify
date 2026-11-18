@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>NexVerify - Team Master Guide & Judge Viva Defense</title>
+<style>
+  :root {
+    --bg: #0d1520;
+    --card: #152232;
+    --card-border: #22374e;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --primary: #38bdf8;
+    --teal: #087f8c;
+    --green: #2ea043;
+    --amber: #d29922;
+    --red: #f85149;
+    --accent: #58a6ff;
+    --tag-bg: #1c2d42;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 16px;
+    font-size: 15px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, #122840, #087f8c);
+    padding: 24px 20px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  header h1 { font-size: 24px; color: #fff; margin-bottom: 8px; font-weight: 800; letter-spacing: -0.5px; }
+  header p { font-size: 13.5px; color: #d0e7ec; line-height: 1.5; }
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+  .nav-box {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .nav-box h3 { font-size: 15px; color: var(--primary); margin-bottom: 10px; }
+  .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; }
+  .nav-grid a {
+    color: #c9d1d9;
+    text-decoration: none;
+    padding: 6px 10px;
+    background: var(--tag-bg);
+    border-radius: 6px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .nav-grid a:hover { background: #27405e; color: var(--primary); }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .card h2 {
+    font-size: 18px;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 8px;
+  }
+  .card h3 { font-size: 15px; color: #fff; margin: 14px 0 6px 0; }
+  .alert {
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin: 12px 0;
+    font-size: 13.5px;
+    border-left: 4px solid;
+  }
+  .alert-warning { background: rgba(210, 153, 34, 0.15); border-color: var(--amber); color: #f0e6c8; }
+  .alert-info { background: rgba(56, 189, 248, 0.15); border-color: var(--primary); color: #cbeeff; }
+  .alert-success { background: rgba(46, 160, 67, 0.15); border-color: var(--green); color: #c8f5d0; }
+  .table-scroll { overflow-x: auto; margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+  th, td { padding: 9px 12px; border-bottom: 1px solid var(--card-border); }
+  th { background: #1a293c; color: var(--primary); font-weight: 700; white-space: nowrap; }
+  tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+  code {
+    background: #1f2e42;
+    color: #ff7b72;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+  }
+  pre {
+    background: #090d13;
+    padding: 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #e6edf3;
+    line-height: 1.45;
+    border: 1px solid #1c2d42;
+    margin: 10px 0;
+  }
+  .qa-block {
+    background: #1a2a3e;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--primary);
+  }
+  .qa-q { font-weight: 700; color: #fff; margin-bottom: 6px; font-size: 14px; }
+  .qa-a { color: #c9d1d9; font-size: 13.5px; }
+  .step-box {
+    display: flex;
+    gap: 12px;
+    margin: 10px 0;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: var(--teal);
+    color: white;
+    font-weight: bold;
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .step-content { flex: 1; font-size: 13.5px; color: #c9d1d9; }
+  .step-content strong { color: #fff; }
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🛡️ NexVerify: Team Master Guide</h1>
+  <p>Local Windows Edition &bull; Judge Defense, Tech Deep-Dive & Viva Script</p>
+  <span class="badge">Verified 163 Tests Passed &bull; 100% Accurate</span>
+</header>
+
+<div class="nav-box">
+  <h3>⚡ Jump Directly to Topic</h3>
+  <div class="nav-grid">
+    <a href="#audit">1. Code Audit & Changes</a>
+    <a href="#claim">2. What NOT to Claim</a>
+    <a href="#stack">3. Tech Stack & Architecture</a>
+    <a href="#flow">4. End-to-End Workflow</a>
+    <a href="#score">5. ProofGrid Scoring Math</a>
+    <a href="#intel">6. Payment & Fake Gateways</a>
+    <a href="#blockchain">7. Blockchain Architecture</a>
+    <a href="#qa">8. Judge Q&A & Viva Prep</a>
+    <a href="#demo">9. 3-Minute Demo Script</a>
+    <a href="#db">10. Database & Storage</a>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="card" id="audit">
+  <h2>1. Code Audit & Verified Changes</h2>
+  <p>Puri repository ko test suite ke saath verify kiya gaya hai:</p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>Feature</th><th>Status</th><th>Technical Details</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Pytest Suite</b></td><td><span style="color:var(--green)">163 Passed, 1 Skipped</span></td><td>Full backend test pass in 61 seconds.</td></tr>
+        <tr><td><b>False Positives</b></td><td><span style="color:var(--green)">Fixed</span></td><td>Normal UPI IDs (<code>phone@okhdfcbank</code>) & contact forms par ab blind 70-point scam penalty nahi lagti.</td></tr>
+        <tr><td><b>Deeper Crawl</b></td><td><span style="color:var(--green)">Fixed</span></td><td>Max 4 public informational pages (Root + 3 pages) with 7s timeout & redirect traces.</td></tr>
+        <tr><td><b>Fake Gateway</b></td><td><span style="color:var(--green)">Fixed</span></td><td>Strict hostname whitelist on HTTPS + 443. Copied text/spoofed domains reject hote hain.</td></tr>
+        <tr><td><b>Evidence Panel</b></td><td><span style="color:var(--green)">Fixed</span></td><td>Har deduction ka reason, evidence ID, UTC timestamp aur SHA-256 hash rendered.</td></tr>
+        <tr><td><b>Complaint Draft</b></td><td><span style="color:var(--green)">Fixed</span></td><td>In-browser editable textarea with review checkbox & cybercrime.gov.in handoff.</td></tr>
+        <tr><td><b>Next.js & Mobile</b></td><td><span style="color:var(--green)">Fixed</span></td><td>Patched to Next.js 16.4.6; mobile table overflow fixed.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="card" id="claim">
+  <h2>2. What is Working vs What NOT to Claim</h2>
+  <div class="alert alert-warning">
+    <b>⚠️ Judge Trap Alert:</b> Judges hackathons me claims pakadte hain. Kabhi bhi aisi cheez claim mat karo jo code me nahi hai!
+  </div>
+  <h3>✅ Working Right Now (Confident Hokar Bolo):</h3>
+  <ul style="padding-left:20px; font-size:13.5px; color:#c9d1d9;">
+    <li>Pre-payment investigation assistant (claims vs evidence).</li>
+    <li>5 concurrent Python checkers (RBI, SEBI, Company, Listing, News).</li>
+    <li>Deterministic ProofGrid scoring (Fixed math: 100 - Total Penalties).</li>
+    <li>SSRF-guarded safe fetcher with DNS IP pinning.</li>
+    <li>Off-chain SHA-256 evidence integrity & Merkle root sealing.</li>
+    <li>Consented unsigned EVM calldata generation (<code>0x54be8d59...</code>).</li>
+  </ul>
+  <h3 style="color:var(--red);">❌ Do NOT Claim in Demo:</h3>
+  <ul style="padding-left:20px; font-size:13.5px; color:#c9d1d9;">
+    <li><b>No Live Blockchain Broadcast:</b> Local launcher me <code>broadcast_enabled: false</code> hai. Server par koi private key ya gas wallet nahi hai.</li>
+    <li><b>No Automatic FIR:</b> App cyber portal par user ki jagah auto-login ya FIR file nahi karti. User review karke khud file karta hai.</li>
+    <li><b>No APK Reverse Engineering:</b> Direct installer links inventory hote hain, par static/dynamic binary reverse engineering nahi hoti.</li>
+    <li><b>No Hidden Backend Access:</b> Hum scammer ka private database ya server code nahi dekh sakte, sirf public HTML surface check hoti hai.</li>
+  </ul>
+</div>
+
+<!-- SECTION 3 -->
+<div class="card" id="stack">
+  <h2>3. Technology Stack & Frameworks</h2>
+  <p><b>Judge: "Tumne kya tech stack use kiya hai?"</b></p>
+  <pre>
+Frontend:  Next.js 16.4.6 (App Router) + React 19.3.1 + TypeScript 5
+Visuals:   Three.js 0.128.0 (StageScene 3D background grid & nodes)
+Streaming: Server-Sent Events (SSE) Client via EventSource API
+Backend:   Python 3.12 + FastAPI 0.162.5 + Uvicorn 0.54.0
+Validation:Pydantic 2.14.3 (Strict bounded request/response models)
+Fetcher:   HTTPX 0.28.1 with custom SSRF security & address pinning
+AI:        Google Gemini API (gemini-2.5-flash) - Search grounding ONLY
+Reports:   ReportLab 5.1.0 (PDF generator) + SHA-256 hash checks
+DB/Store:  SQLite (data/nexverify.db) via SQLAlchemy Core 2.1.8
+Blockchain:Solidity ^0.8.20 (CommitmentAnchor.sol) + solc 0.8.30
+  </pre>
+</div>
+
+<!-- SECTION 4 -->
+<div class="card" id="flow">
+  <h2>4. Complete Request Workflow (Step-by-Step)</h2>
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content"><b>User pastes query:</b> URL, app name ya text <code>POST /api/check</code> par jaata hai.</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content"><b>Resolver & LinkIntel:</b> Query normalize hoti hai; official <code>.bank.in</code>/<code>.gov.in</code> verify hote hain; lookalike spelling & @ tricks detect hote hain.</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content"><b>5 Concurrent Checkers:</b> Python <code>asyncio</code> 5 checks parallel chalata hai: RBI NBFC, SEBI, MCA/RDAP, Surface Crawler, News/Forums.</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-content"><b>Live SSE Streaming:</b> Browser ko har agent ki live progress aur intermediate cards stream hote hain.</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">5</div>
+    <div class="step-content"><b>ProofGrid Scoring:</b> Mathematical deductions calculate hoti hain: <code>Score = max(0, 100 - Total Penalties)</code>.</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">6</div>
+    <div class="step-content"><b>Evidence Sealing:</b> Har file ka SHA-256 hash aur canonical Merkle root banta hai. Result SQLite me save hota hai.</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">7</div>
+    <div class="step-content"><b>Presentation & Handoff:</b> UI par score cards, downloadable PDF/Text report aur cybercrime.gov.in complaint draft render hota hai.</div>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="card" id="score">
+  <h2>5. ProofGrid Scoring Engine (Math & Rules)</h2>
+  <p><b>Formula:</b> <code>Score = max(0, 100 - Total Penalties)</code></p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Penalty Range</th><th>Verdict</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>&ge; 70 Points</td><td><b style="color:var(--red)">HIGH_RISK</b></td><td>Clear fraud signs (Score constrained &le; 10/100).</td></tr>
+        <tr><td>55 - 69 Points</td><td><b style="color:var(--amber)">SUSPICIOUS</b></td><td>Multiple high-risk warning flags.</td></tr>
+        <tr><td>31 - 54 Points</td><td><b style="color:#e3b341">CAUTION</b></td><td>Be careful; context must be verified.</td></tr>
+        <tr><td>&le; 30 Points</td><td><b style="color:var(--green)">VERIFIED_OFFICIAL</b></td><td>Official domain (.gov.in / .bank.in) or verified brand.</td></tr>
+        <tr><td>&le; 30 Points</td><td><b style="color:var(--green)">LOW_RISK</b></td><td>Verified company + old domain + regulatory listing.</td></tr>
+        <tr><td>&le; 30 Points</td><td><b style="color:var(--muted)">UNKNOWN</b></td><td>Nothing proves who runs it (Score capped at 50, UI shows '?').</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert alert-info">
+    <b>Ethical Security Principle:</b> NexVerify me <i>absence of evidence is NOT proof of safety</i>. Agar koi unknown site par koi scam report nahi hai, par koi identity proof bhi nahi hai, toh use "SAFE" nahi bolte, balki <b>UNKNOWN</b> mark karte hain!
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="card" id="intel">
+  <h2>6. Payment Intel & Fake Gateway Detection</h2>
+  <h3>A. Strict Gateway Whitelist:</h3>
+  <p>Code: <code>backend/app/payment_intel.py: gateway_for()</code></p>
+  <p>Scheme must be <code>https</code>, port <code>443</code>, zero credentials, aur exact host match:</p>
+  <ul style="padding-left:20px; font-size:13.5px; color:#c9d1d9; margin: 8px 0;">
+    <li>Razorpay: <code>checkout.razorpay.com</code>, <code>api.razorpay.com</code>, <code>rzp.io</code></li>
+    <li>Cashfree: <code>sdk.cashfree.com</code>, <code>payments.cashfree.com</code></li>
+    <li>PhonePe Merchant: <code>mercury.phonepe.com</code>, <code>merchants.phonepe.com</code></li>
+  </ul>
+  <p>Agar koi hacker <code>razorpay.scamsite.com</code> banaye ya HTML me "Razorpay Verified" likhe, toh use verified gateway <b>nahi</b> maanta.</p>
+  
+  <h3>B. Sensitive Form Analysis:</h3>
+  <p>Agar input me <code>password</code>, <code>otp</code>, <code>pin</code>, <code>cvv</code>, <code>aadhaar</code>, <code>card_number</code> ho:</p>
+  <ul style="padding-left:20px; font-size:13.5px; color:#c9d1d9;">
+    <li>Form submits over unencrypted HTTP &rarr; <b>-60 Points (`INSECURE_SENSITIVE_FORM`)</b></li>
+    <li>Form submits to unverified 3rd party domain &rarr; <b>-35 Points (`SENSITIVE_EXTERNAL_FORM`)</b></li>
+    <li>Form uses GET method (exposing data in URL) &rarr; <b>-35 Points (`SENSITIVE_QUERY_STRING`)</b></li>
+  </ul>
+</div>
+
+<!-- SECTION 7 -->
+<div class="card" id="blockchain">
+  <h2>7. Blockchain Architecture & Smart Contract</h2>
+  <p><b>Solidity Contract:</b> <code>CommitmentAnchor.sol</code> (Solidity ^0.8.20)</p>
+  <div class="alert alert-info">
+    <b>Function:</b> <code>anchor(bytes32 commitment) external onlyWriter</code><br>
+    <b>Selector:</b> <code>0x54be8d59</code> (First 4 bytes of Keccak-256 hash of "anchor(bytes32)")
+  </div>
+  <h3>Off-Chain vs On-Chain (Judges Ko Yeh Samjhana):</h3>
+  <p style="font-size:13.5px; color:#c9d1d9;">
+    Raw evidence, user queries aur URLs <b>kabhi blockchain par nahi jaate</b> (Privacy violation aur gas cost bachaane ke liye).<br>
+    Evidence files ka SHA-256 hash &rarr; Merkle Root &rarr; 32-byte cryptographic salt jodkar ek final 32-byte <b>Salted Commitment</b> banta hai.<br>
+    Backend me <code>blockchain.py</code> is commitment ko unsigned EVM calldata me format karta hai: <code>0x54be8d59&lt;32_byte_commitment&gt;</code>.<br>
+    User apne Web3 wallet (MetaMask) se is transaction ko sign karke Sepolia testnet par deploy kar sakta hai.
+  </p>
+</div>
+
+<!-- SECTION 8 -->
+<div class="card" id="qa">
+  <h2>8. Judge Q&A & Viva Defense (Top Killer Answers)</h2>
+  
+  <div class="qa-block">
+    <div class="qa-q">Q1: "AI agar hallucinate kare toh scam score galat nahi ho jayega?"</div>
+    <div class="qa-a"><b>Answer:</b> "Nahi Sir. Gemini AI sirf Google Search use karke public text facts extract karta hai. Scoring 100% deterministic Python rules (<code>proofgrid.py</code>) se hoti hai. Same evidence har baar mathematically same score calculate karega."</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q2: "Blockchain ka use kya hai agar live broadcast nahi ho raha?"</div>
+    <div class="qa-a"><b>Answer:</b> "Sir, security principles ke mutabiq server par hardcoded private keys ya unprotected wallets nahi hone chahiye. Humne Solidity smart contract likha hai aur backend unsigned EVM calldata (<code>0x54be8d59...</code>) prepare karti hai. User apne Web3 wallet se ise Sepolia testnet par sign kar sakta hai. Evidence ka SHA-256 hash local ledger me already tamper-evident hai."</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q3: "Agar koi scammer real Razorpay payment gateway use kare toh?"</div>
+    <div class="qa-a"><b>Answer:</b> "Sir, gateway endpoint verify hona merchant ke business legitimate hone ka proof nahi hai. NexVerify gateway reference ko detect karta hai lekin sath hi company registration, domain age, RBI license aur scam history cross-check karta hai. QuickRupee me fake gateway tha, par SafeKosh me authentic integration thi."</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q4: "SSRF (Server-Side Request Forgery) se backend kaise safe hai?"</div>
+    <div class="qa-a"><b>Answer:</b> "Sir, humara custom fetcher <code>web.py</code> me resolve kiye gaye IP address ko pin karta hai. Loopback (127.0.0.1), private subnets (10.x, 192.168.x), cloud metadata endpoints (169.254.x), unusual ports aur internal redirects ko connect hone se pehle hi block kar deta hai."</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q5: "Kya tumhara app direct police me FIR file kar deta hai?"</div>
+    <div class="qa-a"><b>Answer:</b> "Nahi Sir. Law enforcement portals par OTP aur complainant verification mandatory hota hai. NexVerify ek pre-filled, editable complaint draft aur SHA-256 sealed evidence PDF deta hai, jise user review karke official portal <code>cybercrime.gov.in</code> ya 1930 helpline par submit kar sakta hai."</div>
+  </div>
+</div>
+
+<!-- SECTION 9 -->
+<div class="card" id="demo">
+  <h2>9. 3-Minute MSIT Demo Flow (Sabse Strong Pitch)</h2>
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content"><b>0:00 - 0:30 (Pitch):</b> "India me log fraud hone ke baad police ke paas jaate hain. NexVerify payment karne se <i>pehle</i> kaam karta hai—ye batata hai ki website jo claim kar rahi hai, public evidence use support karta hai ya nahi."</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content"><b>0:30 - 1:20 (QuickRupee Scam Fixture):</b> Run QuickRupee. Dikhao: Score 18 (HIGH RISK), 5 saal ka claim par domain 4 mahine purana, sensitive account/OTP form over unencrypted HTTP, aur fake Razorpay URL rejected. Point out: <i>"Humne UPI handle ko penalize nahi kiya, destination expose ki."</i></div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content"><b>1:20 - 1:50 (SafeKosh / SBI):</b> Run SafeKosh (Clean NBFC loan app, Score 100) ya live <code>sbi.bank.in</code> (Official government banking TLD verified).</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-content"><b>1:50 - 2:30 (Evidence PDF):</b> Download PDF report kholo. Score deduction table, SHA-256 manifest hash aur audit trail dikhao.</div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">5</div>
+    <div class="step-content"><b>2:30 - 3:00 (Complaint Draft):</b> Editable complaint draft panel dikhao. Review checkbox tick karke direct official cybercrime.gov.in portal link dikhao. Concluding punchline: <i>"Hum claims nahi karte, evidence aur uncertainty dono transparently dikhate hain!"</i></div>
+  </div>
+</div>
+
+<!-- SECTION 10 -->
+<div class="card" id="db">
+  <h2>10. Database, Cache & Provenance</h2>
+  <p><b>SQLite Database:</b> <code>data/nexverify.db</code></p>
+  <ul style="padding-left:20px; font-size:13.5px; color:#c9d1d9;">
+    <li>Table <code>checks</code>: Stores check_id, query, norm_query, created_at, score, verdict, demo, result_json.</li>
+    <li>Table <code>flags</code>: Stores community user disputes and feedback.</li>
+    <li>Production Ready: Code uses SQLAlchemy Core. Production me sirf <code>DATABASE_URL=postgresql://...</code> pass karne par bina code change ke PostgreSQL connect ho jaata hai.</li>
+    <li>24-Hour Cache: Memory dict (or Redis via <code>REDIS_URL</code>). Fresh scans <code>fresh: true</code> flag se trigger hote hain.</li>
+    <li>Ledger Directory: <code>data/ledger/&lt;check_id&gt;/revision-001/</code> me tamper-evident history store hoti hai.</li>
+  </ul>
+</div>
+
+<footer>
+  NexVerify Technical Documentation &bull; Ready for Presentation &bull; All 163 Tests Passed
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+NEXVERIFY - READY TO RUN (WINDOWS 64-BIT)
+=======================================
+
+1. Keep this complete folder together. You may move/copy it to another folder.
+2. Double-click START-NEXVERIFY.bat.
+3. Your browser opens http://127.0.0.1:3000. Keep the console window open.
+   Press Ctrl+C in that console to stop the app.
+
+No Python, Node, npm, Docker, Git, admin install or terminal setup is needed.
+Both runtimes, dependencies and the compiled frontend are bundled.
+If Windows blocks a downloaded file, inspect/trust the source before allowing it.
+If port 3000 or 8000 is already busy, close the other app; the launcher never
+kills another program automatically.
+
+TRY: QuickRupee, SafeKosh Finance or another built-in demo. Demos work without
+an API key. Live public-source lookups need internet; some regulator/AI checks
+need your own Gemini key in settings.env. No key was copied from the old project.
+Never share settings.env after adding a key. No paid service is enabled here.
+
+Data, saved results, evidence and logs are stored under data/ in this folder.
+Your old project's databases/evidence/reports were NOT copied. Keep data/ private.
+The interface includes revision history, integrity verification and bundle downloads.
+Blockchain preparation is disabled; contract source is included but never deployed.
+No wallet, private key, signing or transaction broadcast is included.
+
+This folder is for LOCAL USE / TESTING on Windows x64, not public deployment.
+Authentication is in development/local mode. Do not expose ports to the internet.
+The bundled Python is the tested isolated CPython 3.12.10 runtime; public deployment
+requires a current security-patched runtime and the production checklist in docs/.
+Hashes/blockchain do not prove evidence is true. Patentability is not guaranteed.
+
+Source: backend/app, source/frontend, blockchain/contracts.
+The frontend folder is the prebuilt version; editing source/frontend requires a rebuild.
+For ongoing editing use the original nexverify project. The self-contained folder
+is not a replacement Manus managed repository; private checkpoint saving still
+requires Git availability in that environment.

@@ -1,0 +1,20 @@
+{
+  "name": "nexverify-commitment-anchor",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Offline compilation and ABI checks for NexVerify's non-upgradeable commitment anchor",
+  "scripts": {
+    "compile": "node scripts/compile.mjs",
+    "test": "node scripts/test.mjs && node test/contract_evm.test.mjs && node test/e2e_local_evidence_anchor.test.mjs",
+    "test:evm": "node test/contract_evm.test.mjs",
+    "test:e2e": "node test/e2e_local_evidence_anchor.test.mjs",
+    "deploy:sepolia": "node scripts/deploy_sepolia.mjs"
+  },
+  "devDependencies": {
+    "ganache": "^7.9.2",
+    "solc": "0.8.30"
+  },
+  "dependencies": {
+    "ethers": "^6.17.0"
+  }
+}

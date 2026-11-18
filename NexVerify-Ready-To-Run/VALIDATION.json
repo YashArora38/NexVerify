@@ -1,0 +1,12 @@
+{
+  "standalone_startup": "passed",
+  "path_with_spaces_relocation": "passed",
+  "frontend_proxy": "passed",
+  "demo_sse": "passed",
+  "evidence_integrity": "passed",
+  "bundle_download": "passed",
+  "blockchain_broadcast": false,
+  "runtime_data": "clean",
+  "platform": "Windows x64",
+  "purpose": "local use only"
+}

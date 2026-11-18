@@ -1,0 +1,1728 @@
+[
+  {
+    "title": "Read this first|||Sabse pehle yeh padho",
+    "lead": "A team briefing for the reviewed local Windows build. Learn the system, explain its evidence, and answer difficult questions honestly.|||Reviewed local Windows build ka team briefing. System samjho, evidence explain karo aur difficult questions ka honest answer do.",
+    "sections": [
+      [
+        "How to study|||Kaise padhein",
+        "Learn the architecture and request journey first. Then study your role: frontend, backend, scoring or evidence/blockchain. Finish with the worked examples, judge questions and demo script. The appendix maps the code and rules so you can locate the implementation.|||Pehle architecture aur request journey samjho. Phir apna role padho: frontend, backend, scoring ya evidence/blockchain. End mein examples, judge questions aur demo script revise karo. Appendix code aur rules map karta hai taaki implementation mil sake."
+      ],
+      [
+        "Three labels|||Teen labels",
+        "WORKING means implemented in this reviewed build. OPTIONAL means code exists but needs configuration, credentials or an enabled mode. FUTURE means not delivered by this build. A passing test is not proof of real-world detection accuracy.|||WORKING matlab reviewed build mein implemented. OPTIONAL matlab code hai par setting, credentials ya enabled mode chahiye. FUTURE matlab is build mein deliver nahi hua. Test pass hona real-world detection accuracy ka proof nahi hai."
+      ],
+      [
+        "The right mental model|||Simple understanding",
+        "NexVerify is an investigation assistant before payment. It gathers available public signals, applies explicit rules and produces evidence reports. It is not a guarantee of safety, a malware lab, a regulator or a police filing service.|||NexVerify payment se pehle investigation assistant hai. Public signals collect karke fixed rules lagata hai aur evidence report deta hai. Yeh safety guarantee, malware lab, regulator ya police filing service nahi hai."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": "One-line pitch: We show what was found, why it matters, and what remains unknown.|||One-line pitch: Hum batate hain kya mila, kyun important hai aur kya abhi unknown hai.",
+    "sources": "Review basis: source code, Windows launcher and recorded verification; 17 November 2026."
+  },
+  {
+    "title": "Product scope and status|||Product scope aur status",
+    "lead": "A convincing page can still send money or sensitive data to the wrong place.|||Convincing page bhi paisa ya sensitive data galat jagah bhej sakta hai.",
+    "sections": [
+      [
+        "Working now|||Abhi working",
+        "URL/name intake; official-domain and lookalike rules; five concurrent checkers; public website/store inspection; bounded crawl; payment/data destination inventory; explained deductions; PDF/TXT and ZIP exports; complaint drafting.|||URL/name input; official-domain/lookalike rules; five concurrent checkers; public website/store inspection; limited crawl; payment/data destinations; explained deductions; PDF/TXT aur ZIP export; complaint draft."
+      ],
+      [
+        "Conditional capabilities|||Condition par available",
+        "Gemini needs a key, quota and usable sources. Some threat APIs need keys. PostgreSQL and Redis are configuration options. Active browser engines and screenshots exist, but the Windows launcher disables them. Production authentication code exists; the launcher uses development mode.|||Gemini ko key, quota aur usable sources chahiye. Kuch threat APIs ko keys chahiye. PostgreSQL/Redis optional hain. Active browsers aur screenshots ka code hai par launcher unhe off rakhta hai. Production authentication code hai; launcher development mode mein hai."
+      ],
+      [
+        "Not implemented as a live service|||Live service ke roop mein nahi bana",
+        "No APK binary reverse engineering, authenticated payment completion, private server-side code inspection, automatic police/FIR submission or live blockchain broadcast. External scripts are inventoried, not comprehensively executed and analyzed. Universal scam detection is not established.|||APK binary reverse engineering, authenticated payment complete karna, private backend code dekhna, automatic police/FIR submission aur live blockchain broadcast nahi hai. External scripts ki list banti hai; sab scripts execute/analyze nahi hote. Har scam pakadne ka proof nahi hai."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "launcher.py; app/investigation.py; payment_intel.py; blockchain.py"
+  },
+  {
+    "title": "Technology stack|||Technology stack",
+    "lead": "Versions below describe the inspected installation, not universal requirements.|||Neeche versions inspected installation ke hain, universal requirements nahi.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Technology",
+        "Role / kaam"
+      ],
+      [
+        [
+          "Next.js 16.4.6 / React 19.3.1",
+          "App Router pages, components and same-origin API proxy.|||App Router pages, components aur same-origin API proxy."
+        ],
+        [
+          "TypeScript / CSS / Three.js 0.128.0",
+          "Typed UI, responsive styles, decorative 3D scene; 3D does not detect fraud.|||Typed UI, responsive styles aur decorative 3D; 3D fraud detect nahi karta."
+        ],
+        [
+          "Python 3.12 / FastAPI 0.162.5",
+          "API handlers and async investigation orchestration.|||API handlers aur async investigation orchestration."
+        ],
+        [
+          "Uvicorn 0.54.0 / Pydantic 2.14.3",
+          "ASGI server and bounded input validation models.|||ASGI server aur bounded input validation."
+        ],
+        [
+          "HTTPX 0.28.1",
+          "External HTTP, async API clients and bounded page fetching.|||External HTTP, async API clients aur bounded page fetch."
+        ],
+        [
+          "SQLAlchemy 2.1.8 / SQLite",
+          "Database access and local persistent results; PostgreSQL optional.|||Database access aur saved local results; PostgreSQL optional."
+        ],
+        [
+          "Memory cache / optional Redis",
+          "Normalized queries cached for a default 24-hour TTL.|||Normalized queries ke liye default 24-hour cache."
+        ],
+        [
+          "Google Gemini API",
+          "Entity discovery and search-assisted facts; not score calculation.|||Entity discovery/search-assisted facts; score calculate nahi karta."
+        ],
+        [
+          "ReportLab 5.1.0 / hashlib",
+          "PDF generation and SHA-256 integrity checks.|||PDF generation aur SHA-256 integrity checks."
+        ],
+        [
+          "Solidity ^0.8.20 / solc 0.8.30",
+          "Commitment contract source and local compiler tests.|||Commitment contract source aur local compiler tests."
+        ],
+        [
+          "pytest 9.2.0 / pytest-asyncio",
+          "Backend, async, security and regression tests.|||Backend, async, security aur regression tests."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "source/frontend/package.json; installed Python metadata; blockchain/package.json"
+  },
+  {
+    "title": "Architecture at a glance|||Architecture ek nazar mein",
+    "lead": "Three layers: browser experience, investigation API, and durable evidence/storage.|||Teen layers: browser experience, investigation API aur durable evidence/storage.",
+    "sections": [
+      [
+        "External data enters the backend|||External data backend mein aata hai",
+        "Adapters contact public pages, stores, RDAP, Gemini/search and threat sources. The browser does not receive the Gemini secret. The Next.js rewrite forwards /api to the local FastAPI server. The UI can use same-origin requests.|||Adapters public pages, stores, RDAP, Gemini/search aur threat sources se baat karte hain. Browser ko Gemini secret nahi milta. Next.js /api ko local FastAPI tak forward karta hai. UI same-origin requests use karti hai."
+      ],
+      [
+        "Two different data paths|||Do alag data paths",
+        "Progress travels to the browser over Server-Sent Events. Final results go to SQLite; evidence and revision bundles go to files. Blockchain preparation is a separate optional action after evidence exists.|||Progress Server-Sent Events se browser tak aati hai. Final results SQLite mein; evidence aur revision bundles files mein jaate hain. Blockchain preparation evidence ke baad alag optional action hai."
+      ]
+    ],
+    "diagram": [
+      "Browser UI::React components",
+      "Next.js :3000::Pages + /api proxy",
+      "FastAPI :8000::Validation + security",
+      "Orchestrator::Resolver + checkers",
+      "ProofGrid::Rules + verdict",
+      "Storage + exports::SQLite / files / PDF"
+    ],
+    "table": null,
+    "callout": "Five agents means five async Python checker modules in one backend, not five separately deployed autonomous AI services.|||Five agents matlab ek backend ke five async Python checker modules; five alag deployed autonomous AI services nahi.",
+    "sources": "launcher.py; next.config.mjs; orchestrator.py; store.py"
+  },
+  {
+    "title": "One check: start to finish|||Ek check: start se finish",
+    "lead": "Use this sequence to answer: What happens after I paste a link?|||Is sequence se answer do: Link paste karne ke baad kya hota hai?",
+    "sections": [
+      [
+        "Before collection|||Collection se pehle",
+        "A single query is limited to 2-200 characters. The orchestrator normalizes it and may replay a recent cache hit unless fresh=True. A cached result must match engine proofgrid-3. Known demo names select simulated fixtures, clearly labelled in results.|||Single query 2-200 characters tak limited hai. Orchestrator normalize karta hai; fresh=True na ho toh recent cache replay ho sakta hai. Cache engine proofgrid-3 match hona chahiye. Known demo names simulated fixtures select karte hain, result mein label hota hai."
+      ],
+      [
+        "After collection|||Collection ke baad",
+        "A random check ID tracks the run. As checkers complete, progress and provisional cards are emitted. Final processing creates the verdict, bilingual explanation, complaint draft, manifest and revision. The result is saved and emitted to the browser.|||Random check ID run track karti hai. Checkers complete hone par progress aur provisional cards emit hote hain. Final processing verdict, bilingual explanation, complaint draft, manifest aur revision banati hai. Result save hokar browser ko milta hai."
+      ]
+    ],
+    "diagram": [
+      "Submit input::POST /api/check",
+      "Resolve identity::URL / app / category",
+      "Collect evidence::5 checkers + passive",
+      "Calculate verdict::Fixed risk rules",
+      "Seal and save::Manifest + revision + DB",
+      "Explain and export::UI / PDF / TXT / ZIP"
+    ],
+    "table": null,
+    "callout": null,
+    "sources": "app/main.py: CheckIn; orchestrator.py: start_check/_execute/_replay"
+  },
+  {
+    "title": "Frontend modules|||Frontend modules",
+    "lead": "The UI turns an asynchronous investigation into visible progress and understandable evidence.|||UI async investigation ko visible progress aur understandable evidence mein badalti hai.",
+    "sections": [
+      [
+        "State and responsibility|||State aur responsibility",
+        "React state stores checker progress, cards, result and errors. useEffect starts a run and subscribes to events. The server result is authoritative; the browser does not independently calculate the fraud verdict. CSS handles responsive layout.|||React state progress, cards, result aur errors rakhti hai. useEffect run start aur events subscribe karta hai. Server result authoritative hai; browser independent fraud verdict calculate nahi karta. CSS responsive layout handle karti hai."
+      ]
+    ],
+    "diagram": null,
+    "table": [
+      [
+        "File / component",
+        "Responsibility / zimmedari"
+      ],
+      [
+        [
+          "app/page.tsx + Chrome.tsx",
+          "Home, search input, navigation and shared UI.|||Home, search input, navigation aur common UI."
+        ],
+        [
+          "app/check/[slug]/page.tsx",
+          "Reads slug/query and renders CheckView.|||Slug/query read karke CheckView render."
+        ],
+        [
+          "CheckView.tsx",
+          "Starts checks, subscribes to EventSource, renders timeline/cards/score, reports and human-assist.|||Checks start, EventSource subscribe, timeline/cards/score, reports aur human-assist."
+        ],
+        [
+          "Investigation.tsx",
+          "Page coverage, payment/data/download destinations and editable complaint draft.|||Page coverage, payment/data/download destinations aur editable complaint draft."
+        ],
+        [
+          "EvidenceIntegrity.tsx",
+          "Hashes/history, verify retained evidence, ZIP download, consent-based unsigned anchor preparation.|||Hashes/history, evidence verification, ZIP aur consent ke saath unsigned payload."
+        ],
+        [
+          "lib/api.ts / copy.ts / useLang.ts",
+          "Typed API structures, text and language helpers.|||Typed API structures, text aur language helpers."
+        ],
+        [
+          "StageScene.tsx / stage3d.ts",
+          "Three.js presentation scene; independent of risk decisions.|||Three.js presentation scene; risk decisions se independent."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "source/frontend/app; components; lib"
+  },
+  {
+    "title": "API and live progress|||API aur live progress",
+    "lead": "REST creates resources; SSE streams one-way status updates over HTTP.|||REST resources create karta hai; SSE HTTP par one-way status updates stream karta hai.",
+    "sections": [
+      [
+        "The event vocabulary|||Events ka matlab",
+        "status = general progress; subject = resolved entity; agent = checker state/step; cards = intermediate findings; result = completed result; error = failure; end = stream closure. CheckRun holds events and an asyncio.Condition so readers can wait for new output.|||status = general progress; subject = resolved entity; agent = checker state/step; cards = intermediate findings; result = complete result; error = failure; end = stream close. CheckRun events aur asyncio.Condition rakhta hai, jisse reader nayi output ka wait kare."
+      ],
+      [
+        "Why SSE, not necessarily WebSockets?|||SSE kyun?",
+        "This screen mainly needs server-to-browser updates. EventSource fits that direction and normal HTTP infrastructure. Continuous two-way interaction would justify WebSockets, but is not required for this progress feed.|||Is screen ko mainly server se browser updates chahiye. EventSource is direction aur HTTP infrastructure ke liye fit hai. Continuous two-way interaction ho toh WebSockets useful hain; progress feed ko woh zaroori nahi."
+      ],
+      [
+        "Scaling limitation|||Scaling limitation",
+        "Active runs and event history live in process memory. Restart loses unfinished progress; saved results survive in SQLite. Multiple workers need shared jobs/events and resource ownership handling. Simply enabling PostgreSQL does not solve this.|||Active runs aur event history process memory mein hain. Restart par unfinished progress lost; saved results SQLite mein rehte hain. Multiple workers ko shared jobs/events aur resource ownership chahiye. Sirf PostgreSQL on karna solution nahi."
+      ]
+    ],
+    "diagram": [
+      "POST /api/check::Returns check_id",
+      "GET .../stream::EventSource subscribes",
+      "result + end::Final UI state"
+    ],
+    "table": null,
+    "callout": null,
+    "sources": "main.py stream endpoint; orchestrator.py: CheckRun/RUNS; CheckView.tsx"
+  },
+  {
+    "title": "Backend orchestration|||Backend orchestration",
+    "lead": "asyncio overlaps network waits; it does not magically multiply CPU speed.|||asyncio network wait overlap karta hai; CPU speed magically multiply nahi hoti.",
+    "sections": [
+      [
+        "Shared checker context|||Shared checker context",
+        "Ctx carries the subject, evidence store, event emitter, demo adapter and outputs. Checkers use ctx.fetch, ctx.ask, ctx.rdap and save helpers. claims_ready lets regulatory/company checks wait briefly for extracted website claims while other work continues.|||Ctx mein subject, evidence store, event emitter, demo adapter aur outputs hain. Checkers ctx.fetch, ctx.ask, ctx.rdap aur save helpers use karte hain. claims_ready se regulatory/company check website claims ka thoda wait kar sakta hai aur baaki work chalta rehta hai."
+      ],
+      [
+        "Timeouts and partial results|||Timeouts aur partial result",
+        "The main checker deadline defaults to 55 seconds. Individual checker wrappers use CHECK_TIMEOUT_SECONDS + 30. Resolver and other processing can make total duration longer. Pending checkers are cancelled and marked unverified; one failing source should not erase useful findings from the others.|||Main checker deadline default 55 seconds hai. Individual wrappers CHECK_TIMEOUT_SECONDS + 30 use karte hain. Resolver/extra processing ki wajah se total duration longer ho sakti hai. Pending checkers cancel/unverified hote hain; ek failing source doosron ki findings erase nahi karta."
+      ],
+      [
+        "Replay is not a fresh scan|||Replay fresh scan nahi",
+        "Cache replay emits an existing result. fresh=True collects again. Human-assist recomputes after recording submitted evidence as a new revision. Skipped means not applicable; unverified/error means the source did not establish a usable answer.|||Cache replay existing result bhejta hai. fresh=True dobara collect karta hai. Human-assist submitted evidence ki new revision banakar recompute karta hai. Skipped matlab not applicable; unverified/error matlab usable answer establish nahi hua."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "orchestrator.py; agents/base.py; config.py"
+  },
+  {
+    "title": "Resolve the correct target|||Sahi target resolve karo",
+    "lead": "Entity resolution connects a vague name with a candidate website or store listing.|||Entity resolution vague naam ko candidate website ya store listing se connect karta hai.",
+    "sections": [
+      [
+        "Direct parsing and app lookup|||Direct parsing aur app lookup",
+        "resolver.py recognizes URLs, app-store links and messaging links. signals.py classifies input/category and checks local trusted-domain/impersonation cues. App lookup uses Apple iTunes software search for India and Google Play pages. Search matches are candidates, not verified business ownership.|||resolver.py URLs, app-store/messaging links recognize karta hai. signals.py input/category classify aur local trusted-domain/impersonation cues check karta hai. App lookup India ke Apple iTunes software search aur Google Play pages use karta hai. Search match candidate hai, verified business ownership nahi."
+      ],
+      [
+        "Host versus text in a URL|||Host aur URL text ka difference",
+        "linkintel.py uses parsed host, registrable domain, public-suffix data and local brand/identity records. It examines lookalike spelling, misleading subdomains, userinfo @ tricks, risky paths and lexical patterns. A real platform does not automatically verify every user page hosted on it.|||linkintel.py parsed host, registrable domain, public-suffix aur local brand/identity records use karta hai. Lookalike spelling, misleading subdomains, @ tricks, risky paths aur lexical patterns check hote hain. Real platform uske har user page ko automatically verify nahi karta."
+      ],
+      [
+        "Explain with an example|||Example se explain karo",
+        "sbi.bank.in.attacker.example belongs under attacker.example. In https://trusted.example@attacker.example/, attacker.example is the destination host. These structural checks work without an LLM. A similarly named app can still be wrongly resolved, so publisher-domain binding remains a validation gap.|||sbi.bank.in.attacker.example ka actual domain attacker.example hai. https://trusted.example@attacker.example/ mein destination attacker.example hai. Yeh checks LLM ke bina chalte hain. Similar naam wali app galat resolve ho sakti hai; publisher-domain binding abhi validation gap hai."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "resolver.py; signals.py; linkintel.py; appstore.py; app/data/"
+  },
+  {
+    "title": "Five checker modules|||Five checker modules",
+    "lead": "Each checker returns status, data, evidence IDs, timing and explanatory notes.|||Har checker status, data, evidence IDs, timing aur notes return karta hai.",
+    "sections": [
+      [
+        "Why skip a checker?|||Checker skip kyun?",
+        "A normal shop need not undergo a SEBI investment lookup. Category and extracted claims determine relevance. A loan or investment promise makes the corresponding regulator important. Skipping an irrelevant check reduces noise and API cost; it is not an approval.|||Normal shop ke liye SEBI investment lookup zaroori nahi. Category aur claims relevance decide karte hain. Loan/investment promise par relevant regulator important hota hai. Irrelevant check skip karne se noise/API cost kam hoti hai; yeh approval nahi."
+      ]
+    ],
+    "diagram": null,
+    "table": [
+      [
+        "Checker",
+        "Checks and limits / kaam aur limit"
+      ],
+      [
+        [
+          "RBI / lending",
+          "Search-assisted lender/NBFC/DLA relationship when relevant. Not a direct certification API; directory presence is not endorsement.|||Relevant lending case mein search-assisted lender/NBFC/DLA relationship. Direct certification API nahi; directory presence endorsement nahi."
+        ],
+        [
+          "SEBI / investment",
+          "Registration claims/numbers for investment activity. Search absence must be interpreted with sources and context.|||Investment activity ke registration claims/numbers. Search absence ko sources aur context ke saath samjho."
+        ],
+        [
+          "Company + domain",
+          "RDAP age and search-assisted CIN/company facts. Registration alone does not prove website ownership.|||RDAP age aur search-assisted CIN/company facts. Registration website ownership prove nahi karta."
+        ],
+        [
+          "Website / app listing",
+          "Website, Play listing/data-safety, Apple listing, Telegram preview; claims and payment surfaces.|||Website, Play listing/data-safety, Apple listing, Telegram preview; claims aur payment surfaces."
+        ],
+        [
+          "News / reputation",
+          "RSS plus Gemini-assisted reports; grounded URL filtering. Allegations are not court findings.|||RSS aur Gemini-assisted reports; grounded URL filtering. Allegations court findings nahi."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "app/agents/rbi.py; sebi.py; company.py; listing.py; news.py; base.py"
+  },
+  {
+    "title": "AI and grounding|||AI aur grounding",
+    "lead": "Deterministic scoring does not guarantee correct facts: AI may influence the extracted inputs to the rules.|||Deterministic scoring correct facts ki guarantee nahi: AI rules ke extracted inputs influence kar sakta hai.",
+    "sections": [
+      [
+        "How Gemini is used|||Gemini ka role",
+        "gemini.py calls generateContent with requested search/URL-context tools, parses structured output, and retains returned sources and queries. Model name is environment-configured; code default is gemini-flash-lite-latest with fallback candidates. The launcher disables AI_SUMMARY, so final explanations normally use templates.|||gemini.py requested search/URL-context tools ke saath generateContent call, structured output parse aur sources/queries save karta hai. Model environment-configured hai; code default gemini-flash-lite-latest aur fallbacks hain. Launcher AI_SUMMARY off rakhta hai, isliye final explanation normally template se hoti hai."
+      ],
+      [
+        "Rate-limit caveat you must know|||Rate-limit caveat zaroor jaano",
+        "Current code removes attached tools after HTTP 429 before retrying. Never claim every answer is search-grounded. RBI/SEBI reject no-source findings; company/news apply extra source checks, but these are not complete fact verification. A model can return incorrect or stale information even with links.|||Current code HTTP 429 par tools hata kar retry karta hai. Har answer search-grounded bolna galat hai. RBI/SEBI no-source findings reject karte hain; company/news extra source checks karte hain, par yeh complete fact verification nahi. Links ke saath bhi model wrong/stale information de sakta hai."
+      ],
+      [
+        "Hallucination and injection defenses|||Hallucination aur injection defenses",
+        "Evidence extraction, source checks and fixed rules reduce unconstrained AI decisions. They do not eliminate malicious page instructions or bad entity matching. Production needs stricter fallback behavior, claim-level citations and adversarial evaluation; do not claim prompt-injection immunity.|||Evidence extraction, source checks aur fixed rules AI ke unrestricted decisions kam karte hain. Malicious page instructions ya wrong entity matching khatam nahi hote. Production mein strict fallback, claim-level citations aur adversarial evaluation chahiye; prompt-injection immunity claim mat karo."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "gemini.py: generate/_parse; explain.py; source guards in agents; launcher.py"
+  },
+  {
+    "title": "Safe public-page fetching|||Public page ko safely fetch karna",
+    "lead": "The scanner must not become a route into private networks. This is the purpose of the SSRF boundary.|||Scanner private networks mein entry ka rasta na ban jaye; isi liye SSRF boundary hai.",
+    "sections": [
+      [
+        "What SSRF means|||SSRF ka matlab",
+        "Server-Side Request Forgery means an attacker supplies a URL that makes your server request an internal service, such as localhost or a cloud metadata address. web.py rejects private, loopback, link-local and reserved addresses, URL credentials, unusual ports and ambiguous URL syntax.|||SSRF mein attacker aisa URL deta hai jisse aapka server localhost ya cloud metadata jaise internal service ko request bhej de. web.py private, loopback, link-local/reserved IPs, URL credentials, unusual ports aur ambiguous syntax reject karta hai."
+      ],
+      [
+        "Network controls|||Network controls",
+        "The direct fetcher validates redirect destinations, limits redirects to 5 and response bytes to 5 MB, and uses validated address pinning in the normal transport path. Pinning helps address DNS rebinding: validating one IP and accidentally connecting to a changed private IP. These controls still need production egress defense in depth.|||Direct fetcher redirect destination validate, maximum 5 redirects aur 5 MB response limit karta hai. Normal transport mein validated address pinning hoti hai. Isse DNS rebinding risk kam hota hai: validate public IP aur connect private IP ho jana. Production mein network egress defense bhi chahiye."
+      ],
+      [
+        "Browser ladder status|||Browser ladder ki reality",
+        "Fallback code contains curl_cffi, nodriver and Playwright, plus TLS/DNS inspection. The launcher sets active browser inspection and screenshots to false. A blocked page can remain unavailable; this is not proof of fraud. Do not pitch guaranteed CAPTCHA bypass.|||Fallback code mein curl_cffi, nodriver, Playwright aur TLS/DNS inspection hain. Launcher active browser aur screenshots false rakhta hai. Blocked page unavailable reh sakta hai; yeh fraud proof nahi. Guaranteed CAPTCHA bypass pitch mat karo."
+      ]
+    ],
+    "diagram": [
+      "Validate URL::Scheme, host, port",
+      "Resolve + restrict::Public IP addresses",
+      "Bounded GET::Size + time + redirects"
+    ],
+    "table": null,
+    "callout": null,
+    "sources": "web.py: validate_safe_url/_bounded_get/fetch_page; browser_ladder.py; launcher.py"
+  },
+  {
+    "title": "Deep public-surface inspection|||Deep public-surface inspection",
+    "lead": "Deep means several relevant public surfaces with explicit coverage, not access to hidden backend code.|||Deep ka matlab relevant public surfaces aur clear coverage; hidden backend code ka access nahi.",
+    "sections": [
+      [
+        "Crawl policy|||Crawl policy",
+        "investigate() parses links from the root and chooses same-netloc informational paths such as about, contact, privacy, refund, download and payments. It strips fragments, rejects query-bearing candidates and excludes action paths such as logout, buy and submit. It does not recursively crawl the entire internet.|||investigate() root ke links parse karke same-netloc about, contact, privacy, refund, download/payments jaise paths choose karta hai. Fragments remove, query-bearing candidates reject aur logout/buy/submit paths exclude hote hain. Poora internet recursively crawl nahi hota."
+      ],
+      [
+        "Bounds and evidence|||Limits aur evidence",
+        "Maximum coverage is root + 3 pages. Extra fetches run concurrently with a 7-second wrapper each, using the existing safe fetcher. Each readable page gets an evidence ID, raw HTML capture up to 2 MB, final URL and redirect trace. Merged risk rules are deduplicated by rule ID.|||Maximum root + 3 pages hain. Extra fetches concurrent, har ek ka 7-second wrapper aur existing safe fetcher hai. Readable page ko evidence ID, up to 2 MB HTML capture, final URL aur redirect trace milta hai. Merged risks rule ID se deduplicate hote hain."
+      ],
+      [
+        "What is not followed|||Kya follow nahi hota",
+        "Discovered external scripts, installer URLs and HTML meta-refresh targets are recorded as references; they are not all executed or independently fetched. Coverage says pages read versus attempted. Root-page failure means deep inspection cannot be claimed.|||External scripts, installer URLs aur HTML meta-refresh targets references ki tarah record hote hain; sab execute/independently fetch nahi hote. Coverage pages read aur attempted dikhati hai. Root fail ho toh deep inspection claim nahi kar sakte."
+      ]
+    ],
+    "diagram": [
+      "Root HTML::Initial successful page",
+      "Select links::Same-site info paths",
+      "Inspect + capture::At most 3 extra pages"
+    ],
+    "table": null,
+    "callout": null,
+    "sources": "investigation.py; payment_intel.py: SurfaceParser; agents/listing.py"
+  },
+  {
+    "title": "Payments: evidence, not assumptions|||Payments: evidence, assumptions nahi",
+    "lead": "A request for bank details or a UPI payment can be legitimate. The destination and context matter.|||Bank details ya UPI payment request genuine ho sakti hai. Destination aur context matter karte hain.",
+    "sections": [
+      [
+        "Spoofing example|||Spoofing example",
+        "checkout.razorpay.com is different from checkout.razorpay.com.evil.example. The code parses the hostname instead of trusting copied text or a gateway logo. Even the real endpoint is only a reference; no provider merchant-account verification API is called.|||checkout.razorpay.com aur checkout.razorpay.com.evil.example alag hain. Code hostname parse karta hai, copied text/logo trust nahi karta. Real endpoint bhi reference hai; provider merchant-account verification API call nahi hoti."
+      ]
+    ],
+    "diagram": null,
+    "table": [
+      [
+        "Observation / rule",
+        "Interpretation / matlab"
+      ],
+      [
+        [
+          "UPI handle found",
+          "Inventory only; number-based format does not identify personal versus merchant ownership. No surface-scan fraud penalty by itself.|||Sirf inventory; number-based format personal/merchant ownership decide nahi karta. Surface scanner mein akela fraud penalty nahi."
+        ],
+        [
+          "Recognized gateway reference",
+          "Exact known HTTPS endpoint, with valid URL structure. Merchant identity and transaction outcome are not verified.|||Exact known HTTPS endpoint aur valid URL structure. Merchant identity/transaction outcome verified nahi."
+        ],
+        [
+          "Sensitive form over HTTP: 60",
+          "Unencrypted submission may expose account/credential data.|||Unencrypted submission account/credential data expose kar sakti hai."
+        ],
+        [
+          "Sensitive external form: 35",
+          "Different registrable domain without recognized gateway; affiliation needs checking. Could still be a legitimate integration.|||Different registrable domain, recognized gateway nahi; affiliation check chahiye. Legitimate integration bhi ho sakta hai."
+        ],
+        [
+          "Sensitive form using GET: 35",
+          "Entered values can appear in URLs, history and logs.|||Entered values URL, history aur logs mein aa sakti hain."
+        ],
+        [
+          "Ordinary contact form / shortener",
+          "Recorded as context; the new page-surface analyzer does not automatically penalize these alone.|||Context mein record; new page-surface analyzer inhe akela automatically penalize nahi karta."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "payment_intel.py: gateway_for/analyze_page_payments_and_links; proofgrid.py"
+  },
+  {
+    "title": "Apps, downloads and threat sources|||Apps, downloads aur threat sources",
+    "lead": "Separate listing metadata, download-link observations and malware reputation; they answer different questions.|||Listing metadata, download-link observations aur malware reputation alag rakho; inke questions alag hain.",
+    "sections": [
+      [
+        "Store inspection|||Store inspection",
+        "Apple iTunes search provides candidate app metadata. Google Play lookup/search and listing pages provide publisher and data-safety text. The listing checker requires successful retrieval for its store flags; a store listing alone no longer grants strong safety proof. Declared data safety is not a binary permission audit.|||Apple iTunes search candidate metadata deta hai. Google Play lookup/search/listing publisher aur data-safety text dete hain. Store flags ke liye listing checker successful retrieval chahta hai; store presence akeli strong safety proof nahi. Declared data safety binary permission audit nahi hai."
+      ],
+      [
+        "Installer and script observations|||Installer aur script observations",
+        "The surface parser inventories APK/XAPK/APKS/IPA/EXE/MSI/DMG/mobileconfig links and their hosts. It also records script/iframe sources, refresh targets, selected encoded-JavaScript patterns and adult/betting content terms. These observations do not prove malware execution or identify the author.|||Surface parser APK/XAPK/APKS/IPA/EXE/MSI/DMG/mobileconfig links aur hosts list karta hai. Script/iframe sources, refresh targets, selected encoded-JavaScript patterns aur adult/betting terms bhi record hote hain. Yeh malware execution ya author identity prove nahi karte."
+      ],
+      [
+        "Passive intelligence|||Passive intelligence",
+        "passive.py gathers phishing/malware feeds, Tranco rank, optional Google Safe Browsing/VirusTotal, certificate-transparency and prior urlscan observations, plus a lexical heuristic. No API key, no hit or no result is not a clean malware certificate. Popularity and HTTPS are not safety guarantees.|||passive.py phishing/malware feeds, Tranco rank, optional Safe Browsing/VirusTotal, certificate-transparency, prior urlscan observations aur lexical heuristic use karta hai. Key na ho, hit na ho ya result na mile toh clean malware certificate nahi. Popularity/HTTPS safety guarantee nahi."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": "Remaining gap: older direct-input link/text rules still assign strong APK/short-link/betting penalties. Do not claim false positives are eliminated across the entire engine.|||Remaining gap: purane direct-input link/text rules APK/short-link/betting par strong penalties laga sakte hain. Poore engine ke false positives eliminate ho gaye, yeh mat bolo.",
+    "sources": "appstore.py; agents/listing.py; payment_intel.py; passive.py; linkintel.py; proofgrid.py"
+  },
+  {
+    "title": "ProofGrid scoring and confidence|||ProofGrid scoring aur confidence",
+    "lead": "The score is a rule-based index, not a calibrated probability of fraud.|||Score rule-based index hai; calibrated fraud probability nahi.",
+    "sections": [
+      [
+        "How the number is calculated|||Number kaise banta hai",
+        "Base arithmetic: score = max(0, 100 - sum of applied penalties). Each Hit records rule_id, agent, penalty, claim, how_checked, found and evidence_ids. UNKNOWN is a deliberate exception to presenting the raw number as trust: its internal value is neutral, not a safety score.|||Base formula: score = max(0, 100 - applied penalties ka sum). Har Hit rule_id, agent, penalty, claim, how_checked, found aur evidence_ids rakhta hai. UNKNOWN mein raw number trust ki tarah present nahi hota; internal value neutral hai, safety score nahi."
+      ],
+      [
+        "Confidence is a separate heuristic|||Confidence alag heuristic hai",
+        "Seven evidence areas produce pass/warn/fail/unknown rows. The count called verified means rows with evidence, not necessarily successful checks. HIGH confidence can come from recognized official identity or a strong negative signal. It is not statistical certainty and can coexist with incomplete page coverage.|||Seven areas pass/warn/fail/unknown rows banate hain. verified count ka matlab evidence wali rows hai, zaroori nahi successful checks. HIGH confidence official identity ya strong negative signal se aa sakti hai. Yeh statistical certainty nahi aur partial coverage ke saath bhi ho sakti hai."
+      ]
+    ],
+    "diagram": null,
+    "table": [
+      [
+        "Total risk / condition",
+        "Decision / decision"
+      ],
+      [
+        [
+          "Any individual penalty >=100",
+          "HIGH_RISK; score constrained to at most 10.|||HIGH_RISK; score maximum 10 tak constrained."
+        ],
+        [
+          "Risk >=70",
+          "HIGH_RISK"
+        ],
+        [
+          "Risk 55-69",
+          "SUSPICIOUS"
+        ],
+        [
+          "Risk 31-54",
+          "CAUTION"
+        ],
+        [
+          "Risk <=30 + verified identity",
+          "VERIFIED_OFFICIAL"
+        ],
+        [
+          "Risk <=30 + strong supporting proof",
+          "LOW_RISK"
+        ],
+        [
+          "Risk <=30 + insufficient identity proof",
+          "UNKNOWN; internal score capped at 50, UI shows ?.|||UNKNOWN; internal score max 50, UI par ?."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "proofgrid.py: collect/score_and_verdict/build_score_breakdown; linkintel.py thresholds"
+  },
+  {
+    "title": "Worked example: QuickRupee|||Worked example: QuickRupee",
+    "lead": "This is a fictional demo fixture. The input is simulated; the extraction and scoring pipeline is real.|||Yeh fictional demo fixture hai. Input simulated hai; extraction aur scoring pipeline real hai.",
+    "sections": [
+      [
+        "What the upgraded surface panel adds|||Naya surface panel kya dikhata hai",
+        "It displays the observed UPI handle without penalizing that alone, a direct APK link marked binary not analyzed, and an HTTP collector receiving sensitive form fields. The fake Razorpay-like hostname does not create a recognized gateway badge.|||UPI handle dikhata hai par usi par penalty nahi; direct APK link par binary not analyzed; sensitive fields lene wala HTTP collector dikhata hai. Fake Razorpay-like hostname recognized gateway badge nahi banata."
+      ],
+      [
+        "Contrast cases|||Compare karke samjho",
+        "SafeKosh is a simulated consistent financial-service case. A live SBI-domain test returned VERIFIED_OFFICIAL/100 but partial=true because listing retrieval was unavailable. An unknown entity can remain UNKNOWN even when no warning rule fires.|||SafeKosh simulated consistent financial-service case hai. Live SBI-domain test VERIFIED_OFFICIAL/100 tha, par listing unavailable hone se partial=true tha. Unknown entity par warning na mile tab bhi UNKNOWN ho sakta hai."
+      ]
+    ],
+    "diagram": null,
+    "table": [
+      [
+        "Observed demo finding",
+        "Penalty"
+      ],
+      [
+        [
+          "Three or more retained scam-report allegations|||Three ya zyada retained scam-report allegations",
+          "70"
+        ],
+        [
+          "Sensitive account/OTP form submits over HTTP|||Sensitive account/OTP form HTTP par submit",
+          "60"
+        ],
+        [
+          "Unproven lending entity with no supported lender listing|||Unproven lender, supported listing nahi",
+          "45"
+        ],
+        [
+          "Domain roughly four months old|||Domain roughly four months purana",
+          "20"
+        ],
+        [
+          "Company roughly three months old|||Company roughly three months purani",
+          "20"
+        ],
+        [
+          "Publisher mismatch|||Publisher mismatch",
+          "20"
+        ],
+        [
+          "Sensitive loan-app data declarations|||Sensitive loan-app data declarations",
+          "10"
+        ],
+        [
+          "TOTAL / score",
+          "245 / max(0, 100 - 245) = 0"
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "demo.py; test_scoring.py; output/verification/QuickRupee-DEMO.pdf; recorded live smoke test"
+  },
+  {
+    "title": "Database, cache and files|||Database, cache aur files",
+    "lead": "SQLite stores structured results. Files store evidence. Cache accelerates repeated requests. These are different jobs.|||SQLite structured results; files evidence; cache repeated requests fast karta hai. Teen alag jobs hain.",
+    "sections": [
+      [
+        "Persistence and scaling|||Persistence aur scaling",
+        "SQLAlchemy abstracts SQLite/PostgreSQL access. save_result replaces the current DB row inside a transaction; historical snapshots live in the ledger, not multiple checks rows. Memory cache disappears on restart; Redis is optional. Batch run state is in memory, so this is not yet a durable distributed job system.|||SQLAlchemy SQLite/PostgreSQL access abstract karta hai. save_result transaction mein current DB row replace karta hai; history ledger mein hai, multiple checks rows mein nahi. Memory cache restart par lost; Redis optional. Batch state memory mein hai, durable distributed job system nahi."
+      ]
+    ],
+    "diagram": [
+      "SQLite::Checks + flags + ownership",
+      "Memory / Redis::Query -> check ID + TTL",
+      "Filesystem::Evidence / ledger / PDFs"
+    ],
+    "table": [
+      [
+        "Table / location",
+        "Fields or purpose"
+      ],
+      [
+        [
+          "checks",
+          "id, query, norm_query, created_at, score, verdict, demo, result_json"
+        ],
+        [
+          "flags",
+          "id, check_id, query, reason, comment, created_at"
+        ],
+        [
+          "nexverify_resource_owners",
+          "resource_type + resource_id key; owner_id; created_at"
+        ],
+        [
+          "data/nexverify.db",
+          "Launcher-selected SQLite database.|||Launcher-selected SQLite database."
+        ],
+        [
+          "data/evidence/<check_id>/",
+          "Captured artifacts and manifest.|||Captured artifacts aur manifest."
+        ],
+        [
+          "data/ledger/<check_id>/revision-.../",
+          "Versioned revision.json and copied artifacts.|||Versioned revision.json aur artifact copies."
+        ],
+        [
+          "data/reports/",
+          "Generated reports and related exports.|||Generated reports aur related exports."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "store.py; security.py ownership table; provenance.py; config.py; launcher.py"
+  },
+  {
+    "title": "Evidence: capture, seal, revise|||Evidence: capture, seal, revise",
+    "lead": "An evidence ID connects a finding to the retained material used to support it.|||Evidence ID finding ko uske supporting saved material se connect karti hai.",
+    "sections": [
+      [
+        "What is captured|||Kya capture hota hai",
+        "EvidenceStore records ID, agent, kind, label, source URL, captured_at, SHA-256, filename and simulated flag. Page snapshots can contain extracted text; the new surface capture retains bounded HTML and redirects. Search evidence retains prompt/answer/source information.|||EvidenceStore ID, agent, kind, label, source URL, captured_at, SHA-256, filename aur simulated flag save karta hai. Page snapshots extracted text rakh sakte hain; new surface capture bounded HTML/redirects rakhta hai. Search evidence prompt/answer/source info rakhta hai."
+      ],
+      [
+        "What a revision adds|||Revision kya add karti hai",
+        "provenance.py freezes a result snapshot, manifest and artifact descriptors; builds a typed dependency graph; records changed evidence/rules; links previous_revision_hash; and writes a new directory using locking and exclusive writes. Human-assist creates another revision instead of silently rewriting history.|||provenance.py result snapshot, manifest/artifact descriptors freeze, typed dependency graph aur changed evidence/rules record karta hai. previous_revision_hash link aur locking/exclusive writes se new directory banti hai. Human-assist history chupke overwrite karne ke badle new revision banata hai."
+      ]
+    ],
+    "diagram": [
+      "Capture::Page / search / RDAP",
+      "Hash::SHA-256 content",
+      "Manifest::IDs + URLs + time + hashes",
+      "Snapshot::Result + rules + artifacts",
+      "Revision chain::Previous revision hash",
+      "Offline verification::Recompute and compare"
+    ],
+    "table": null,
+    "callout": "Hash integrity is not source truth. Local files and self-reported capture time can be replaced by an attacker with full filesystem control unless independently anchored/backed up.|||Hash integrity source truth nahi. Full filesystem control wala attacker local files aur self-reported time replace kar sakta hai, jab tak independent anchor/backup na ho.",
+    "sources": "evidence.py; provenance.py: record_revision/_graph/_dependency_diff"
+  },
+  {
+    "title": "Merkle tree and commitment|||Merkle tree aur commitment",
+    "lead": "A Merkle tree summarizes many evidence descriptors into one root hash. A salted commitment then binds the larger bundle.|||Merkle tree multiple evidence descriptors ko ek root hash mein summarize karta hai. Salted commitment larger bundle ko bind karta hai.",
+    "sections": [
+      [
+        "Exact implementation|||Exact implementation",
+        "Canonical JSON uses UTF-8, sorted string keys, compact separators and rejected NaN/infinity. This is python-json-v1, not a claim of RFC 8785 compatibility. Artifact digests bind metadata and bytes. Ordered leaf/node hashing uses distinct domain prefixes; an odd level duplicates the last node.|||Canonical JSON UTF-8, sorted string keys, compact separators aur NaN/infinity rejection use karta hai. Yeh python-json-v1 hai, RFC 8785 compatibility claim nahi. Artifact digest metadata aur bytes bind karta hai. Ordered leaf/node hashing ke alag domain prefixes hain; odd level last node duplicate karta hai."
+      ],
+      [
+        "Why the salt matters|||Salt kyun important hai",
+        "Each revision generates 32 random bytes of salt. commitment = SHA256(COMMIT_DOMAIN || salt || ASCII(bundle_sha256)). The unsigned on-chain payload contains this commitment, not the evidence or salt. The private offline revision/bundle contains material needed to verify it. A shared bundle therefore needs careful access control.|||Har revision 32 random bytes salt banati hai. commitment = SHA256(COMMIT_DOMAIN || salt || ASCII(bundle_sha256)). Unsigned chain payload mein commitment hota hai, evidence/salt nahi. Private offline revision/bundle verification ka material rakhta hai; shared bundle ko access control chahiye."
+      ]
+    ],
+    "diagram": [
+      "Artifact A / B / C::Content + metadata hashes",
+      "Leaf hashes::Domain-separated SHA-256",
+      "Pair and combine::Odd last node duplicated",
+      "Merkle root::Ordered artifact summary",
+      "Bundle digest::Result + manifest + graph",
+      "Salted commitment::Domain + salt + bundle hash"
+    ],
+    "table": null,
+    "callout": "The value prepared for anchoring is the salted bundle commitment, not simply the raw Merkle root.|||Anchoring ke liye salted bundle commitment prepare hota hai, sirf raw Merkle root nahi.",
+    "sources": "provenance.py: canonical_json/merkle_root/_artifact_root/record_revision; blockchain.py"
+  },
+  {
+    "title": "Solidity contract explained|||Solidity contract samjho",
+    "lead": "CommitmentAnchor is a small registry of commitments, not a fraud-detection algorithm.|||CommitmentAnchor commitments ka chhota registry hai, fraud-detection algorithm nahi.",
+    "sections": [
+      [
+        "Immutability has a specific meaning|||Immutability ka specific matlab",
+        "The source has no proxy/upgrade or commitment rewrite/delete function. Writer permissions remain mutable by the owner. This is a contract design property, not proof that any address is deployed on Sepolia. Local compiler/ABI tests do not replace deployment and EVM behavior tests.|||Source mein proxy/upgrade ya commitment rewrite/delete function nahi. Owner writer permissions change kar sakta hai. Yeh contract design property hai, Sepolia address deployed hone ka proof nahi. Local compiler/ABI tests deployment/EVM behavior tests ka replacement nahi."
+      ]
+    ],
+    "diagram": null,
+    "table": [
+      [
+        "Contract element",
+        "Meaning / matlab"
+      ],
+      [
+        [
+          "immutable owner",
+          "Deployer controls writer permissions; owner address cannot be reassigned.|||Deployer writers control karta hai; owner address reassign nahi hota."
+        ],
+        [
+          "writers[address]",
+          "Only approved writers can anchor; deployer starts approved.|||Sirf approved writers anchor karte hain; deployer initially approved."
+        ],
+        [
+          "anchored[publisher][commitment]",
+          "Stores whether this publisher has anchored this commitment.|||Publisher ne commitment anchor kiya ya nahi."
+        ],
+        [
+          "anchoredAt[publisher][commitment]",
+          "Stores block.timestamp when anchor is accepted.|||Anchor accept hone ka block.timestamp."
+        ],
+        [
+          "setWriter(address,bool)",
+          "Owner-only writer permission change; zero address rejected.|||Owner-only permission change; zero address reject."
+        ],
+        [
+          "anchor(bytes32)",
+          "Writer-only; zero commitment and duplicate publisher/commitment rejected.|||Writer-only; zero commitment aur duplicate pair reject."
+        ],
+        [
+          "CommitmentAnchored event",
+          "Emits publisher, commitment and timestamp for future receipt/log verification.|||Publisher, commitment aur timestamp event; future receipt/log verification."
+        ],
+        [
+          "isAnchored(address,bytes32)",
+          "Read-only query of recorded presence.|||Recorded presence ki read-only query."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "blockchain/contracts/CommitmentAnchor.sol; blockchain/scripts/test.mjs"
+  },
+  {
+    "title": "Blockchain: implemented vs future|||Blockchain: implemented aur future",
+    "lead": "Current state: local evidence integrity works; blockchain transaction preparation is offline only.|||Current state: local evidence integrity working; blockchain transaction preparation offline-only hai.",
+    "sections": [
+      [
+        "What is produced now|||Abhi kya produce hota hai",
+        "POST anchor/prepare validates consent, nonzero 32-byte commitment, positive chain ID and nonzero 20-byte contract address. It returns chainId, to, data and value=0x0. data is selector 0x54be8d59 plus the 32-byte commitment. The selector uses Ethereum Keccak-256, not NIST SHA3-256.|||POST anchor/prepare consent, nonzero 32-byte commitment, positive chain ID aur nonzero 20-byte address validate karta hai. chainId, to, data, value=0x0 return hote hain. data = selector 0x54be8d59 + 32-byte commitment. Selector Ethereum Keccak-256 se hai, NIST SHA3-256 se nahi."
+      ],
+      [
+        "What must not be claimed|||Kya claim nahi karna",
+        "broadcast_enabled is always false. There is no wallet, signer, RPC sender, gas estimator or receipt-verification path in this helper. Configured chain ID 11155111 targets Sepolia in a future workflow; the configured contract address is not evidence of deployment. Prepared/simulated is not anchored.|||broadcast_enabled hamesha false hai. Helper mein wallet, signer, RPC sender, gas estimator ya receipt-verification path nahi. Chain ID 11155111 future Sepolia workflow target karta hai; configured address deployment proof nahi. Prepared/simulated ka matlab anchored nahi."
+      ],
+      [
+        "What anchoring could prove later|||Baad mein anchor kya prove karega",
+        "A verified transaction can establish that a publisher submitted a commitment by a chain timestamp. It still cannot establish that a page was truthful, that its operator is guilty, or that a report is automatically admissible in court.|||Verified transaction publisher ka commitment chain timestamp tak submit hona establish kar sakta hai. Page truthful tha, operator guilty hai ya report automatically court-admissible hai, yeh establish nahi hota."
+      ]
+    ],
+    "diagram": [
+      "Retained revision::Verify local hashes",
+      "Explicit consent::Prepare-only action",
+      "Unsigned calldata::No wallet / no broadcast",
+      "FUTURE: deploy + sign::Verified contract + signer",
+      "FUTURE: send::RPC + nonce + gas",
+      "FUTURE: confirm::Receipt + chain verification"
+    ],
+    "table": null,
+    "callout": null,
+    "sources": "blockchain.py; main.py anchor endpoints; blockchain/README.md; launcher.py"
+  },
+  {
+    "title": "Security, authentication and privacy|||Security, authentication aur privacy",
+    "lead": "Local development behavior and production protections are different configurations.|||Local development aur production protections alag configurations hain.",
+    "sections": [
+      [
+        "Application boundary|||Application boundary",
+        "security.py checks origin, request sizes, rate limits and resource access. Production requires HTTPS origin, a sufficiently long session secret and project configuration; missing configuration fails closed. Signed session handling, OAuth state/nonce and ownership records support authenticated isolation. The local launcher intentionally uses development mode.|||security.py origin, request size, rate limit aur resource access check karta hai. Production ko HTTPS origin, long session secret aur project config chahiye; missing config par fail-closed. Signed sessions, OAuth state/nonce aur ownership records isolation support karte hain. Local launcher development mode use karta hai."
+      ],
+      [
+        "Privacy is best effort|||Privacy best effort hai",
+        "Human-submitted text is minimized with regexes for emails, phone numbers and 12-digit identifiers. This is not guaranteed anonymization. Public captures, queries and evidence can contain personal data. Downloaded bundles may include sensitive original material and salts; treat them as private.|||Human-submitted text mein email, phone aur 12-digit identifiers regex se minimize hote hain. Guaranteed anonymization nahi. Public captures, queries aur evidence mein personal data ho sakta hai. Downloaded bundle mein sensitive original material/salt ho sakta hai; private treat karo."
+      ],
+      [
+        "What production still needs|||Production ko aur kya chahiye",
+        "Formal retention/deletion policy, encryption and key management, network egress isolation, authorization review, centralized rate limits, monitoring and adversarial tests. Do not expose the development server publicly. Never show settings.env/backend .env, cookies or API keys during a demo.|||Retention/deletion policy, encryption/key management, network egress isolation, authorization review, centralized rate limits, monitoring aur adversarial tests chahiye. Development server public expose mat karo. Demo mein settings.env/backend .env, cookies ya API keys mat dikhana."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "security.py; privacy.py; web.py; launcher.py"
+  },
+  {
+    "title": "Reports and complaint workflow|||Reports aur complaint workflow",
+    "lead": "Help users preserve facts and prepare a submission without pretending to be a police portal.|||User ko facts preserve aur submission prepare karne mein help karo; police portal hone ka claim mat karo.",
+    "sections": [
+      [
+        "Three exports, three purposes|||Teen exports, teen purpose",
+        "PDF is a readable report with score deductions, investigation and evidence excerpts. TXT is a portable text report. ZIP is a machine-verifiable offline revision bundle; it is not the same as a PDF attachment. Demo reports are explicitly labelled simulated.|||PDF readable report hai: deductions, investigation aur evidence excerpts. TXT portable text report hai. ZIP machine-verifiable offline revision bundle hai; PDF attachment jaisa nahi. Demo reports explicitly simulated labelled hain."
+      ],
+      [
+        "Draft behavior|||Draft behavior",
+        "Investigation.tsx allows local text edits and copying. Those edits are not automatically saved to downloaded reports. A review checkbox gates official portal links in this panel; simulated reports do not get submission links there. The app does not authenticate to or submit into the government portal.|||Investigation.tsx local draft edit/copy deta hai. Edits automatically downloaded reports mein save nahi hote. Review checkbox is panel ke official portal links gate karta hai; simulated reports ko wahan submission links nahi milte. App government portal mein authenticate/submit nahi karta."
+      ],
+      [
+        "Human-assist is separate|||Human-assist alag hai",
+        "When inspection fails, a consenting user can paste observations. The backend minimizes text, saves user-asserted evidence, extracts claims, recomputes and creates a revision. User statements are not independently verified facts. For financial loss, official guidance directs victims to 1930 or the cybercrime portal.|||Inspection fail ho toh consent se user observations paste kar sakta hai. Backend text minimize, user-asserted evidence save, claims extract, recompute aur revision create karta hai. User statements independently verified facts nahi. Financial loss par official guidance 1930/cybercrime portal batati hai."
+      ]
+    ],
+    "diagram": [
+      "Review findings::Facts + evidence IDs",
+      "Export evidence::PDF / TXT / ZIP",
+      "Edit incident draft::Amount / date / UTR",
+      "User reviews::Confirm actual incident",
+      "Official portal::User login / OTP",
+      "User submits::Save acknowledgement"
+    ],
+    "table": null,
+    "callout": null,
+    "sources": "report_pdf.py; report_text.py; Investigation.tsx; main.py human-assist; cybercrime.gov.in/webform/cyber_suspect.aspx"
+  },
+  {
+    "title": "API reference: one investigation|||API reference: single investigation",
+    "lead": "Use the check ID returned by POST /api/check. Routes below are backend HTTP interfaces.|||POST /api/check se mili check ID use karo. Neeche backend HTTP interfaces hain.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Method / route",
+        "Purpose / purpose"
+      ],
+      [
+        [
+          "GET /api/health",
+          "Runtime health, live-key flag, configured model, DB/cache type and demo names. A key flag is not API reachability.|||Runtime health, key flag, model, DB/cache aur demos. Key flag API reachability proof nahi."
+        ],
+        [
+          "GET /api/rules",
+          "Published rule catalog. Definitions can include legacy rules not emitted by the current surface parser.|||Rule catalog; legacy definitions bhi ho sakti hain jo current parser emit nahi karta."
+        ],
+        [
+          "GET /api/recent",
+          "Recent results, filtered by access rules.|||Access rules ke hisaab se recent results."
+        ],
+        [
+          "POST /api/check",
+          "JSON: query, fresh. Creates/replays run; returns check_id.|||JSON query/fresh; run create/replay; check_id return."
+        ],
+        [
+          "GET /api/check/{id}/stream",
+          "SSE event history and live updates.|||SSE event history aur live updates."
+        ],
+        [
+          "GET /api/check/{id}",
+          "Completed result JSON; unfinished/unknown may return 404.|||Final result JSON; unfinished/unknown par 404 ho sakta hai."
+        ],
+        [
+          "GET .../{id}/report.pdf",
+          "Readable evidence report.|||Readable evidence report."
+        ],
+        [
+          "GET .../{id}/report.txt",
+          "Plain-text report download.|||Plain-text report download."
+        ],
+        [
+          "POST .../{id}/flag",
+          "Records a dispute/reason/comment. Not automatic proof of fraud.|||Dispute/reason/comment save; fraud ka automatic proof nahi."
+        ],
+        [
+          "POST .../{id}/human-assist",
+          "Consented minimized text/answers; recompute and new revision.|||Consented minimized text/answers; recompute aur new revision."
+        ],
+        [
+          "GET /api/evidence/{id}/{file}",
+          "Serves retained evidence after path/access checks.|||Path/access checks ke baad saved evidence."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "app/main.py; app/security.py; source/frontend/lib/api.ts"
+  },
+  {
+    "title": "API reference: integrity and batch|||API reference: integrity aur batch",
+    "lead": "The batch workflow aggregates existing checks. Integrity routes inspect retained evidence, not truth itself.|||Batch existing checks aggregate karta hai. Integrity routes saved evidence inspect karte hain, truth ko nahi.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Method / route",
+        "Purpose / purpose"
+      ],
+      [
+        [
+          "GET /api/check/{id}/integrity",
+          "Revision metadata, verification summary and anchor-preparation status.|||Revision metadata, verification summary aur anchor preparation status."
+        ],
+        [
+          "GET .../{id}/verify",
+          "Recompute retained evidence/revision integrity.|||Saved evidence/revision integrity recompute."
+        ],
+        [
+          "GET .../{id}/ledger",
+          "Revision history.|||Revision history."
+        ],
+        [
+          "GET .../{id}/bundle.zip",
+          "Offline revision and artifacts.|||Offline revision aur artifacts."
+        ],
+        [
+          "POST .../{id}/anchor/prepare",
+          "Explicit consent required; unsigned transaction only.|||Explicit consent; sirf unsigned transaction."
+        ],
+        [
+          "POST /api/check/batch",
+          "Inputs list/text and fresh flag; returns batch ID.|||Inputs list/text aur fresh flag; batch ID return."
+        ],
+        [
+          "GET /api/check/batch/{id}",
+          "Batch state and completed items.|||Batch state aur completed items."
+        ],
+        [
+          "GET .../batch/{id}/stream",
+          "Batch progress SSE.|||Batch progress SSE."
+        ],
+        [
+          "GET .../batch/{id}/export.csv",
+          "CSV result export.|||CSV result export."
+        ],
+        [
+          "GET .../batch/{id}/report.pdf",
+          "Batch PDF report.|||Batch PDF report."
+        ],
+        [
+          "POST .../batch/{id}/retry-failed",
+          "Retries failed items.|||Failed items retry."
+        ],
+        [
+          "POST /api/whatsapp",
+          "Twilio-style form webhook response. Not proof a WhatsApp account/provider is connected.|||Twilio-style form webhook response; WhatsApp account/provider connected hone ka proof nahi."
+        ],
+        [
+          "/api/auth/*",
+          "Status/login/callback/logout routes for configured authentication.|||Configured authentication ke status/login/callback/logout routes."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "main.py; security.py; provenance.py; blockchain.py"
+  },
+  {
+    "title": "Testing and measured limits|||Testing aur measured limits",
+    "lead": "Separate implementation checks from real-world detection quality.|||Implementation checks aur real-world detection quality alag samjho.",
+    "sections": [
+      [
+        "What was verified in this session history|||Session history mein kya verify hua",
+        "The final backend run recorded 163 passed, 1 skipped. Production Next.js build and TypeScript passed. Running-app smoke checks covered unsafe form detection, fake gateway rejection, installer inventory, PDF/TXT export, ZIP and evidence verification. Desktop/mobile browser checks covered draft editing, demo submission guard and no JavaScript errors.|||Final backend run: 163 passed, 1 skipped. Production Next.js build/TypeScript pass. Running-app smoke mein unsafe form, fake gateway rejection, installer inventory, PDF/TXT, ZIP aur evidence verify hue. Desktop/mobile mein draft editing, demo guard aur no JavaScript errors verify hue."
+      ],
+      [
+        "Meaningful regression cases|||Meaningful regression cases",
+        "Tests include normal UPI/contact forms, email versus UPI extraction, hostname spoofing, HTTP/external/GET sensitive forms, store listing without safety proof and bounded crawl evidence. Existing suites cover scoring, provenance, security, live-pipeline mocks, replay and APIs. One skipped test remains skipped, not passed.|||Tests normal UPI/contact forms, email vs UPI, hostname spoofing, HTTP/external/GET sensitive forms, store listing without safety proof aur bounded crawl cover karte hain. Existing suites scoring, provenance, security, mocked live pipeline, replay/APIs cover karte hain. Skipped test pass count mein nahi hai."
+      ],
+      [
+        "How to measure detector quality next|||Detector quality kaise measure karein",
+        "Build a labelled, time-stamped dataset of genuine merchants, banks, lookalikes and independently confirmed malicious pages. Measure precision, recall, false-positive rate, UNKNOWN rate, source coverage and latency. Split related domains/campaigns across evaluation carefully to avoid leakage. Do not infer 99% accuracy from unit-test counts.|||Genuine merchants, banks, lookalikes aur independently confirmed malicious pages ka labelled timestamped dataset banao. Precision, recall, false-positive rate, UNKNOWN rate, coverage aur latency measure karo. Related domains/campaigns se evaluation leakage avoid karo. Unit-test count se 99% accuracy mat bolo."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": "Precision = correct alerts / all alerts. Recall = detected malicious cases / all malicious cases. Coverage is not the same as either.|||Precision = correct alerts / total alerts. Recall = detected malicious cases / total malicious cases. Coverage in dono se alag hai.",
+    "sources": "backend/tests/; docs/MSIT-READY-REVIEW.md; output/verification/; preceding recorded test output"
+  },
+  {
+    "title": "Run, rebuild and troubleshoot|||Run, rebuild aur troubleshoot",
+    "lead": "The launcher serves the packaged frontend folder. Editing source files alone does not update that packaged UI.|||Launcher packaged frontend folder serve karta hai. Sirf source edit karne se packaged UI update nahi hoti.",
+    "sections": [
+      [
+        "Start locally|||Local start",
+        "Double-click START-NEXVERIFY.bat. launcher.py reads settings.env, selects bundled Python/Node, launches API on 127.0.0.1:8000 and Next.js on 127.0.0.1:3000, and checks readiness. Open http://127.0.0.1:3000. API and web logs live under data/logs. Keep the launcher process running.|||START-NEXVERIFY.bat double-click karo. launcher.py settings.env read, bundled Python/Node select, API :8000 aur Next.js :3000 start aur readiness check karta hai. http://127.0.0.1:3000 kholo. API/web logs data/logs mein hain. Launcher running rakho."
+      ],
+      [
+        "Build and verify|||Build aur verify",
+        "Frontend source lives in source/frontend. npm ci installs the lockfile, npm run build generates a standalone production output. Package standalone files, .next/static and public assets into frontend before restarting. Backend tests: runtime/python/python.exe -m pytest backend/tests -q -o asyncio_mode=auto, from the bundle root.|||Frontend source source/frontend mein hai. npm ci lockfile install; npm run build standalone production output banata hai. Restart se pehle standalone files, .next/static aur public assets frontend mein package karo. Bundle root se backend tests: runtime/python/python.exe -m pytest backend/tests -q -o asyncio_mode=auto."
+      ],
+      [
+        "Common problems|||Common problems",
+        "Port busy: determine whether this app is already running; do not kill unrelated apps. Old UI: confirm packaged build and refresh browser. Unknown/partial result: inspect unavailable sources and rerun fresh. Quota failure: use clearly labelled demos. PDF route failure: inspect API logs and report directory permissions. Never display secret env files to judges.|||Port busy: check karo app already running hai kya; unrelated apps kill mat karo. Old UI: packaged build aur refresh check. Unknown/partial: unavailable sources dekho, fresh rerun. Quota fail: labelled demos use karo. PDF fail: API logs/report folder permissions check. Judges ko secret env files mat dikhao."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "START-NEXVERIFY.bat; launcher.py; next.config.mjs; package.json; backend/tests/"
+  },
+  {
+    "title": "Team roles and demo choreography|||Team roles aur demo flow",
+    "lead": "Give each teammate ownership of a clear explanation, then practice passing questions between roles.|||Har teammate ko clear explanation ka owner banao aur questions handoff practice karo.",
+    "sections": [
+      [
+        "Three-minute sequence|||Three-minute sequence",
+        "0:00-0:30: describe pre-payment harm. 0:30-1:20: run QuickRupee and explicitly call it simulated; show HTTP sensitive form and fake gateway rejection. 1:20-1:50: compare SafeKosh or a live official domain with coverage visible. 1:50-2:30: open PDF and verify evidence hashes. 2:30-3:00: show complaint draft and explain honest limits.|||0:00-0:30: payment se pehle harm explain. 0:30-1:20: QuickRupee run, simulated bolo; HTTP sensitive form aur fake gateway rejection dikhao. 1:20-1:50: SafeKosh ya live official domain compare, coverage visible. 1:50-2:30: PDF kholo aur evidence hash verify. 2:30-3:00: complaint draft aur honest limits."
+      ],
+      [
+        "If the network fails|||Network fail ho toh",
+        "Say: The live source is unavailable, so we do not invent a clean result. We will demonstrate the same parser/scoring pipeline on labelled fixtures, then show our previously captured evidence. Do not quietly present cached or simulated data as live.|||Bolo: Live source unavailable hai, isliye hum clean result invent nahi karte. Same parser/scoring pipeline labelled fixtures par dikhayenge, phir previously captured evidence. Cache ya simulation ko chupke live mat bolo."
+      ]
+    ],
+    "diagram": null,
+    "table": [
+      [
+        "Role",
+        "Explain / explain karo"
+      ],
+      [
+        [
+          "Product / presenter",
+          "Problem, user journey, evidence/uncertainty and the demo sequence.|||Problem, user journey, evidence/uncertainty aur demo sequence."
+        ],
+        [
+          "Frontend owner",
+          "Next.js/React components, SSE state, mobile layout and complaint draft.|||Next.js/React components, SSE state, mobile layout aur complaint draft."
+        ],
+        [
+          "Backend / risk owner",
+          "Async checkers, input resolution, fetching, source limits and scoring.|||Async checkers, resolution, fetching, source limits aur scoring."
+        ],
+        [
+          "Evidence / security owner",
+          "SQLite/files, hashes, revisions, Merkle tree, contract and offline-only anchoring.|||SQLite/files, hashes, revisions, Merkle, contract aur offline-only anchoring."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "demo.py; CheckView.tsx; launcher.py; evidence exports"
+  },
+  {
+    "title": "Judge Q&A: architecture|||Judge Q&A: architecture",
+    "lead": "Answer in one clear sentence, then offer the deeper explanation.|||Pehle ek clear sentence, phir deeper explanation.",
+    "sections": [
+      [
+        "Q: Are these really five AI agents?|||Q: Kya five AI agents hain?",
+        "They are five specialized async checker modules coordinated by Python. Some use Gemini search-assisted extraction; others use HTTP parsing and RDAP. We do not claim five independent self-governing LLM services.|||Yeh Python-coordinated five specialized async checker modules hain. Kuch Gemini search-assisted extraction use karte hain; kuch HTTP parsing/RDAP. Five independent self-governing LLM services ka claim nahi."
+      ],
+      [
+        "Q: Why FastAPI and Next.js?|||Q: FastAPI aur Next.js kyun?",
+        "FastAPI provides validated Python endpoints and async I/O around existing investigation code. Next.js/React provides routed pages and reactive streaming UI, with an API proxy. These choices separate presentation from backend decisions.|||FastAPI validated Python endpoints aur investigation code ke around async I/O deta hai. Next.js/React routed pages, reactive streaming UI aur API proxy deta hai. Presentation aur backend decisions separate rehte hain."
+      ],
+      [
+        "Q: Why SQLite, and can it scale?|||Q: SQLite kyun, scale hoga?",
+        "SQLite makes the Windows demo portable without a database service. SQLAlchemy supports a PostgreSQL configuration later. Scaling also needs a shared worker queue, event store, cache and distributed limits; changing the DB alone is insufficient.|||SQLite Windows demo portable banata hai, alag database service nahi chahiye. SQLAlchemy se PostgreSQL configure ho sakta hai. Scaling ko shared worker queue, event store, cache/distributed limits bhi chahiye; DB change akela enough nahi."
+      ],
+      [
+        "Q: Is it entirely offline?|||Q: Kya poora offline hai?",
+        "No. Local lexical/registry rules, saved evidence verification and demo fixtures can run without external data. Fresh public pages, app stores, RDAP, AI and threat sources need network access. Offline does not mean fresh threat coverage.|||Nahi. Local lexical/registry rules, saved evidence verification aur demos external data ke bina chal sakte hain. Fresh pages, app stores, RDAP, AI/threat sources ko network chahiye. Offline ka matlab fresh threat coverage nahi."
+      ],
+      [
+        "Q: Does AI decide the score?|||Q: AI score decide karta hai?",
+        "No, fixed Python rules choose penalties. AI can still affect extracted facts or identity resolution, so source quality and validation remain important. Deterministic scoring is reproducibility, not automatic correctness.|||Nahi, fixed Python rules penalties choose karte hain. AI extracted facts/identity resolution affect kar sakta hai, isliye source quality aur validation important hain. Deterministic scoring reproducibility hai, automatic correctness nahi."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "orchestrator.py; agents/; proofgrid.py; store.py; gemini.py"
+  },
+  {
+    "title": "Judge Q&A: trust and coverage|||Judge Q&A: trust aur coverage",
+    "lead": "Do not turn a useful signal into a stronger claim than the evidence supports.|||Useful signal ko evidence se bada claim mat banao.",
+    "sections": [
+      [
+        "Q: How do you avoid flagging real banks?|||Q: Real bank ko scam kaise nahi bolte?",
+        "We distinguish official identity and context from the presence of financial fields. Ordinary UPI and contact forms are not sufficient in the new surface rules. However old lexical rules and identity heuristics still need false-positive benchmarking.|||Official identity/context ko financial fields ki presence se alag rakhte hain. New surface rules mein normal UPI/contact form enough nahi. Lekin old lexical rules/identity heuristics ko false-positive benchmark abhi chahiye."
+      ],
+      [
+        "Q: Can a scammer use real Razorpay or a store listing?|||Q: Scammer real gateway/store use kare toh?",
+        "Yes; a provider endpoint or store presence is not business certification. We display the observed reference and inspect other contradictions. We do not yet verify merchant onboarding or beneficiary ownership through provider APIs.|||Haan; provider endpoint/store presence business certification nahi. Reference show karke other contradictions inspect karte hain. Provider APIs se merchant onboarding/beneficiary ownership abhi verify nahi karte."
+      ],
+      [
+        "Q: Have you reverse-engineered the APK?|||Q: APK reverse-engineer kiya?",
+        "No. This build records download links and public app metadata. A separate isolated pipeline is needed for binary hashes, signing certificates, manifest permissions, static code analysis and sandboxed behavior. Never run an untrusted installer during the demo.|||Nahi. Is build mein download links aur public app metadata record hote hain. Binary hash, signing certificate, manifest permissions, static code aur sandbox behavior ke liye separate isolated pipeline chahiye. Demo mein untrusted installer run mat karo."
+      ],
+      [
+        "Q: How accurate is the detector?|||Q: Accuracy kitni hai?",
+        "We have regression and integration evidence, not a validated universal accuracy percentage. We plan labelled evaluation of precision, recall, false positives, UNKNOWN rate and latency, including legitimate small merchants.|||Regression/integration evidence hai, validated universal accuracy percentage nahi. Labelled evaluation mein precision, recall, false positives, UNKNOWN rate aur latency measure karenge; legitimate small merchants bhi include honge."
+      ],
+      [
+        "Q: Can you identify the scammer or inspect hidden code?|||Q: Scammer identify ya hidden code inspect kar sakte ho?",
+        "Public registration/hosting clues may help, but privacy-protected RDAP, shared hosting and redirects do not prove a person. Client HTML cannot reveal all server-side behavior. We provide investigative leads, not attribution certainty.|||Public registration/hosting clues help kar sakte hain, par private RDAP/shared hosting/redirects person prove nahi karte. Client HTML poora backend behavior nahi dikhata. Hum leads dete hain, attribution certainty nahi."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "payment_intel.py; investigation.py; appstore.py; web.py; test_investigation.py"
+  },
+  {
+    "title": "Judge Q&A: evidence and chain|||Judge Q&A: evidence aur chain",
+    "lead": "This is where precise wording makes the product more credible.|||Yahan precise wording product ko credible banati hai.",
+    "sections": [
+      [
+        "Q: Is the evidence tamper-proof?|||Q: Evidence tamper-proof hai?",
+        "It is tamper-evident relative to retained hashes and revision records. A changed byte breaks verification against an intact reference. Full local filesystem compromise can replace evidence and hashes together; independent anchoring or protected backups strengthen that boundary.|||Intact hashes/revision ke comparison mein tamper-evident hai. Byte change ho toh verification fail. Full local filesystem compromise evidence aur hashes dono replace kar sakta hai; independent anchoring/protected backup boundary strong karega."
+      ],
+      [
+        "Q: Is it live on Sepolia?|||Q: Sepolia par live hai?",
+        "No live broadcast is implemented. The code prepares a consented unsigned call and includes a Solidity contract source. We have not established deployment, transaction submission or a verified chain receipt for this bundle.|||Live broadcast implemented nahi. Code consent ke saath unsigned call prepare karta hai aur Solidity contract source hai. Is bundle ke liye deployment, transaction submission ya verified receipt establish nahi hui."
+      ],
+      [
+        "Q: Why blockchain rather than only a database?|||Q: Database ke badle blockchain kyun?",
+        "A future independently verified chain commitment could make later evidence replacement harder to conceal. The current value is already in the local evidence ledger and offline verification. Blockchain is an optional integrity extension, not the scam-detection engine.|||Future verified chain commitment se evidence replace karna chhupana mushkil ho sakta hai. Current value local ledger/offline verification mein already hai. Blockchain optional integrity extension hai, scam-detection engine nahi."
+      ],
+      [
+        "Q: Can police treat this as an FIR or legal proof?|||Q: Yeh FIR ya legal proof hai?",
+        "The app prepares a reviewable evidence package and complaint draft. The user submits through official channels. A hash does not automatically establish admissibility, truth, authorship or guilt, and a complaint acknowledgement is not automatically an FIR.|||App reviewable evidence package aur complaint draft banata hai. User official channels se submit karta hai. Hash automatically admissibility, truth, authorship ya guilt prove nahi karta; complaint acknowledgement automatically FIR nahi."
+      ],
+      [
+        "Q: What would you build next?|||Q: Next kya build karoge?",
+        "First benchmark and tune false positives; strengthen authoritative entity/merchant binding and AI grounding. Then isolate binary analysis and production egress/jobs. Add chain deployment/receipt verification only when an operational need and consent flow justify it.|||Pehle benchmark/false positives, authoritative entity/merchant binding aur AI grounding strong karenge. Phir isolated binary analysis aur production egress/jobs. Chain deployment/receipt verification tab jab operational need aur consent flow justify kare."
+      ]
+    ],
+    "diagram": null,
+    "table": null,
+    "callout": null,
+    "sources": "provenance.py; blockchain.py; contracts/CommitmentAnchor.sol; docs/MSIT-READY-REVIEW.md"
+  },
+  {
+    "title": "Glossary in plain language|||Glossary: simple language",
+    "lead": "Learn these terms so you can explain them without memorized jargon.|||Terms ko samjho taaki ratte hue jargon ke bina explain kar sako.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Term",
+        "Explanation / explanation"
+      ],
+      [
+        [
+          "API / endpoint",
+          "A defined request/response interface; an endpoint is one route.|||Defined request/response interface; endpoint uska route."
+        ],
+        [
+          "Async / concurrency",
+          "Overlap waiting tasks, especially network I/O.|||Waiting tasks, especially network I/O, overlap karna."
+        ],
+        [
+          "SSE",
+          "Server-Sent Events: server pushes progress to the browser.|||Server browser ko progress push karta hai."
+        ],
+        [
+          "RDAP / DNS",
+          "Registration lookup / name-to-network-address lookup.|||Registration lookup / name ka network address lookup."
+        ],
+        [
+          "Registrable domain",
+          "The base domain controlled by a registrant, considering public suffixes.|||Public suffix ko consider karke registrant-controlled base domain."
+        ],
+        [
+          "SSRF",
+          "A supplied URL tricks a server into requesting internal services.|||Diya gaya URL server se internal service request karwa de."
+        ],
+        [
+          "SHA-256 / hash",
+          "Fixed-length digest; a change in bytes changes the digest.|||Fixed-length digest; bytes badlo toh digest badalta hai."
+        ],
+        [
+          "Merkle root",
+          "One hash summarizing an ordered tree of evidence descriptors.|||Evidence descriptors ke ordered tree ka ek summary hash."
+        ],
+        [
+          "Salt / commitment",
+          "Random bytes plus bundle digest create a less guessable binding.|||Random bytes + bundle digest se less-guessable binding."
+        ],
+        [
+          "ABI / calldata",
+          "Contract interface / encoded function call sent to an EVM contract.|||Contract interface / EVM contract ka encoded function call."
+        ],
+        [
+          "Grounding",
+          "Connecting AI output to returned sources; not guaranteed truth.|||AI output ko returned sources se connect karna; truth guarantee nahi."
+        ],
+        [
+          "False positive / false negative",
+          "Legitimate case flagged / malicious case missed.|||Genuine ko flag karna / malicious case miss karna."
+        ],
+        [
+          "TTL / cache",
+          "Time-to-live / temporarily reused result.|||Result kitni der valid / temporarily reused result."
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "Terms explained against the implementations reviewed in this guide."
+  },
+  {
+    "title": "Source map and further reading|||Source map aur further reading",
+    "lead": "This handbook describes the code in this bundle. Prefer implementation over older promotional notes.|||Handbook is bundle ke code ko describe karta hai. Purane promotional notes se implementation ko priority do.",
+    "sections": [
+      [
+        "Primary public context|||Primary public context",
+        "RBI Digital Lending Directions: https://www.rbi.org.in/scripts/FS_Notification.aspx?Id=12848\nRBI caution on unauthorised lending apps: https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=50846\nOfficial suspicious-link reporting: https://cybercrime.gov.in/webform/cyber_suspect.aspx\nThese references explain context, not a live integration certification. Regulatory content and threat lists can change.|||RBI Digital Lending Directions: https://www.rbi.org.in/scripts/FS_Notification.aspx?Id=12848\nRBI unauthorised lending-app caution: https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=50846\nOfficial suspicious-link reporting: https://cybercrime.gov.in/webform/cyber_suspect.aspx\nYeh context references hain, live integration certification nahi. Regulatory content/threat lists change ho sakti hain."
+      ]
+    ],
+    "diagram": null,
+    "table": [
+      [
+        "Question area",
+        "Read these files"
+      ],
+      [
+        [
+          "Start / configuration",
+          "launcher.py; backend/app/config.py; START-NEXVERIFY.bat"
+        ],
+        [
+          "UI / streaming",
+          "source/frontend/components/CheckView.tsx; Investigation.tsx; EvidenceIntegrity.tsx; lib/api.ts"
+        ],
+        [
+          "API / orchestration",
+          "backend/app/main.py; orchestrator.py; agents/base.py"
+        ],
+        [
+          "Identity / score",
+          "resolver.py; signals.py; linkintel.py; registry.py; claims.py; proofgrid.py"
+        ],
+        [
+          "Collection / payments",
+          "web.py; browser_ladder.py; appstore.py; investigation.py; payment_intel.py; passive.py"
+        ],
+        [
+          "AI / checker details",
+          "gemini.py; explain.py; agents/rbi.py; sebi.py; company.py; listing.py; news.py"
+        ],
+        [
+          "Persistence / security",
+          "store.py; evidence.py; provenance.py; privacy.py; security.py"
+        ],
+        [
+          "Reports / blockchain",
+          "report_pdf.py; report_text.py; blockchain.py; blockchain/contracts/CommitmentAnchor.sol"
+        ],
+        [
+          "Validation / demo",
+          "backend/tests/; blockchain/scripts/test.mjs; demo.py; docs/MSIT-READY-REVIEW.md"
+        ]
+      ]
+    ],
+    "callout": null,
+    "sources": "All relative paths above are inside NexVerify-Ready-To-Run; backend filenames refer to backend/app unless stated."
+  },
+  {
+    "title": "Rule catalog / 1|||Rule catalog / 1",
+    "lead": "Declared baseline weights, not a list of findings on every site. Branches can apply context-specific values; actual Hit objects explain each deduction.|||Declared baseline weights hain, har site ke findings nahi. Branches context-specific values use kar sakti hain; actual Hit har deduction explain karta hai.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Rule ID",
+        "Base",
+        "Meaning / condition"
+      ],
+      [
+        [
+          "THREAT_FEED",
+          "100",
+          "The exact page is on an active phishing / malware list (OpenPhish, URLhaus, Phishing.Database)"
+        ],
+        [
+          "SAFE_BROWSING",
+          "100",
+          "Google Safe Browsing lists the page as deceptive or malware"
+        ],
+        [
+          "SCRIPT_LINK",
+          "90",
+          "javascript:, data: or file: link"
+        ],
+        [
+          "BRAND_IMPERSONATION",
+          "75",
+          "A brand's name plus login, prize or service words on an address the brand does not own"
+        ],
+        [
+          "BRAND_IN_SUBDOMAIN",
+          "70",
+          "A brand's name or address placed in front of someone else's domain"
+        ],
+        [
+          "BRAND_LOOKALIKE_NAME",
+          "70",
+          "A brand's name glued into an unrelated address with a risky ending or free hosting"
+        ],
+        [
+          "LOOKALIKE",
+          "70",
+          "Spelled like a brand's address with swapped, extra or lookalike letters"
+        ],
+        [
+          "FAKE_GOV",
+          "70",
+          "Looks like a government site but is not on .gov.in / .nic.in"
+        ],
+        [
+          "FAKE_BANK_ZONE",
+          "70",
+          "Copies a .bank.in address inside another domain"
+        ],
+        [
+          "AT_TRICK",
+          "70",
+          "An @ in the link hides the real destination"
+        ],
+        [
+          "PUNYCODE",
+          "70",
+          "Letters from other alphabets that imitate a brand (40 when no brand is copied)"
+        ],
+        [
+          "APK_DOWNLOAD",
+          "70",
+          "Downloads an app file outside the Play Store"
+        ],
+        [
+          "BRAND_IN_PATH",
+          "70",
+          "A brand's name inside the link on a site it does not own, with a login page (35 without)"
+        ],
+        [
+          "BRAND_OTHER_ENDING",
+          "35",
+          "A brand's exact name with a different ending (15 for brands that run country sites, 70 on the worst endings)"
+        ]
+      ]
+    ],
+    "callout": "Catalog text remains in technical English for exact code lookup. APK/short-link/betting rules need continued calibration; no rule weight is a measured fraud probability.|||Exact code lookup ke liye catalog technical English mein hai. APK/short-link/betting rules ko calibration chahiye; weight measured fraud probability nahi.",
+    "sources": "proofgrid.py: RULES; collect(); linkintel.py. Some old labels were qualified here for accurate teaching."
+  },
+  {
+    "title": "Rule catalog / 2|||Rule catalog / 2",
+    "lead": "Declared baseline weights, not a list of findings on every site. Branches can apply context-specific values; actual Hit objects explain each deduction.|||Declared baseline weights hain, har site ke findings nahi. Branches context-specific values use kar sakti hain; actual Hit har deduction explain karta hai.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Rule ID",
+        "Base",
+        "Meaning / condition"
+      ],
+      [
+        [
+          "BRAND_NAME_UNOFFICIAL",
+          "35",
+          "Uses a brand's name on an address it does not own (15 for global brands)"
+        ],
+        [
+          "BRAND_NAME_INSIDE",
+          "15",
+          "Contains a brand's letters inside a longer name"
+        ],
+        [
+          "BETTING",
+          "70",
+          "Betting/casino content heuristic. Do not infer fraud or give legal advice from this category alone."
+        ],
+        [
+          "UPFRONT_FEE",
+          "70",
+          "Asks for a fee or deposit before a job, loan or prize"
+        ],
+        [
+          "GUARANTEED_RETURNS",
+          "70",
+          "Promises guaranteed or very high returns"
+        ],
+        [
+          "TASK_SCAM",
+          "70",
+          "Pays for likes, reviews or other simple tasks"
+        ],
+        [
+          "LOTTERY_PRIZE",
+          "70",
+          "Says you won a prize, lottery or reward points"
+        ],
+        [
+          "KYC_THREAT",
+          "70",
+          "Threatens to block your account, KYC or electricity"
+        ],
+        [
+          "APK_TEXT",
+          "70",
+          "Asks you to install an app file (APK)"
+        ],
+        [
+          "VIP_TIPS",
+          "45",
+          "Sells stock tips in a paid group"
+        ],
+        [
+          "INSTANT_LOAN_PROMISE",
+          "35",
+          "Loan in minutes / no CIBIL check"
+        ],
+        [
+          "MISSPELLED_LOGIN",
+          "45",
+          "Misspells login words on purpose to dodge filters"
+        ],
+        [
+          "IP_ADDRESS",
+          "40",
+          "A bare IP address instead of a name"
+        ],
+        [
+          "LOGIN_BAIT_WORDS",
+          "35",
+          "Address built from login / verify / warning words"
+        ]
+      ]
+    ],
+    "callout": "Catalog text remains in technical English for exact code lookup. APK/short-link/betting rules need continued calibration; no rule weight is a measured fraud probability.|||Exact code lookup ke liye catalog technical English mein hai. APK/short-link/betting rules ko calibration chahiye; weight measured fraud probability nahi.",
+    "sources": "proofgrid.py: RULES; collect(); linkintel.py. Some old labels were qualified here for accurate teaching."
+  },
+  {
+    "title": "Rule catalog / 3|||Rule catalog / 3",
+    "lead": "Declared baseline weights, not a list of findings on every site. Branches can apply context-specific values; actual Hit objects explain each deduction.|||Declared baseline weights hain, har site ke findings nahi. Branches context-specific values use kar sakti hain; actual Hit har deduction explain karta hai.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Rule ID",
+        "Base",
+        "Meaning / condition"
+      ],
+      [
+        [
+          "PRIZE_BAIT_WORDS",
+          "35",
+          "Address built from prize / money words"
+        ],
+        [
+          "GOV_WORDS",
+          "35",
+          "Government words (sarkari / yojana) on a private address"
+        ],
+        [
+          "SHORT_LINK",
+          "35",
+          "A short link hides the destination"
+        ],
+        [
+          "REDIRECTS_ELSEWHERE",
+          "35",
+          "Starts on one site and forwards you to another"
+        ],
+        [
+          "PHISHING_KIT_PATH",
+          "35",
+          "Login / verify script page on an unknown site"
+        ],
+        [
+          "HIDDEN_PAGE",
+          "35",
+          "Page buried in program folders, as on hacked sites"
+        ],
+        [
+          "SITE_INSIDE_LINK",
+          "35",
+          "Another site's name hidden inside the link"
+        ],
+        [
+          "FREE_HOST_BAIT",
+          "35",
+          "Free-platform page with login or prize words"
+        ],
+        [
+          "FREE_HOST_TOKEN",
+          "35",
+          "Free-platform page reached through a random code"
+        ],
+        [
+          "AUTO_NAMED_PAGE",
+          "35",
+          "Auto-named test page on a free platform"
+        ],
+        [
+          "RISKY_ENDING",
+          "31",
+          "Ending used far more by scams (.top, .tk, ...); 20 for .xyz-type endings"
+        ],
+        [
+          "RANDOM_NAME",
+          "10",
+          "Machine-made name (35 on a free platform)"
+        ],
+        [
+          "FREE_HOSTING",
+          "15",
+          "Made on a free website platform"
+        ],
+        [
+          "FREE_HOST_PLUS",
+          "16",
+          "Free-platform page with other warning signs"
+        ]
+      ]
+    ],
+    "callout": "Catalog text remains in technical English for exact code lookup. APK/short-link/betting rules need continued calibration; no rule weight is a measured fraud probability.|||Exact code lookup ke liye catalog technical English mein hai. APK/short-link/betting rules ko calibration chahiye; weight measured fraud probability nahi.",
+    "sources": "proofgrid.py: RULES; collect(); linkintel.py. Some old labels were qualified here for accurate teaching."
+  },
+  {
+    "title": "Rule catalog / 4|||Rule catalog / 4",
+    "lead": "Declared baseline weights, not a list of findings on every site. Branches can apply context-specific values; actual Hit objects explain each deduction.|||Declared baseline weights hain, har site ke findings nahi. Branches context-specific values use kar sakti hain; actual Hit har deduction explain karta hai.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Rule ID",
+        "Base",
+        "Meaning / condition"
+      ],
+      [
+        [
+          "NUMBER_NAME",
+          "15",
+          "The name is just a long number"
+        ],
+        [
+          "LOGIN_PATH",
+          "15",
+          "Login / account page on a site we can't confirm"
+        ],
+        [
+          "BAIT_WORD",
+          "10",
+          "One login or prize word in the address"
+        ],
+        [
+          "MANY_HYPHENS",
+          "10",
+          "Address stuffed with hyphens"
+        ],
+        [
+          "LONG_ADDRESS",
+          "10",
+          "Very long address with many parts"
+        ],
+        [
+          "ODD_PORT",
+          "10",
+          "Unusual port number"
+        ],
+        [
+          "RISKY_ENDING_MILD",
+          "5",
+          "Ending often used by short-lived sites"
+        ],
+        [
+          "NO_HTTPS",
+          "5",
+          "Not a secure https link"
+        ],
+        [
+          "BRAND_NAME_USED",
+          "15",
+          "Uses a well-known brand's name to look trustworthy"
+        ],
+        [
+          "AGE_CONTRADICTION",
+          "70",
+          "Claims years of history but the domain is under 30 days old"
+        ],
+        [
+          "VERY_NEW_DOMAIN",
+          "45",
+          "Domain registered less than 30 days ago"
+        ],
+        [
+          "NEW_DOMAIN",
+          "20",
+          "Domain registered 1-6 months ago"
+        ],
+        [
+          "YOUNG_DOMAIN",
+          "10",
+          "Domain registered 6-12 months ago"
+        ],
+        [
+          "NEW_COMPANY",
+          "20",
+          "Company incorporated less than a year ago"
+        ]
+      ]
+    ],
+    "callout": "Catalog text remains in technical English for exact code lookup. APK/short-link/betting rules need continued calibration; no rule weight is a measured fraud probability.|||Exact code lookup ke liye catalog technical English mein hai. APK/short-link/betting rules ko calibration chahiye; weight measured fraud probability nahi.",
+    "sources": "proofgrid.py: RULES; collect(); linkintel.py. Some old labels were qualified here for accurate teaching."
+  },
+  {
+    "title": "Rule catalog / 5|||Rule catalog / 5",
+    "lead": "Declared baseline weights, not a list of findings on every site. Branches can apply context-specific values; actual Hit objects explain each deduction.|||Declared baseline weights hain, har site ke findings nahi. Branches context-specific values use kar sakti hain; actual Hit har deduction explain karta hai.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Rule ID",
+        "Base",
+        "Meaning / condition"
+      ],
+      [
+        [
+          "CIN_MISMATCH",
+          "70",
+          "The CIN it shows belongs to another company or is struck off"
+        ],
+        [
+          "CIN_NOT_FOUND",
+          "45",
+          "The CIN it shows is not in company records"
+        ],
+        [
+          "RBI_NOT_LISTED",
+          "45",
+          "Loan app with no RBI-regulated lender listing it (only for unproven, young entities)"
+        ],
+        [
+          "SEBI_FAKE_CLAIM",
+          "70",
+          "Shows a SEBI number that SEBI's records give to someone else or don't have"
+        ],
+        [
+          "SEBI_CLAIM_UNCONFIRMED",
+          "45",
+          "Says 'SEBI registered' but no SEBI record was found"
+        ],
+        [
+          "SEBI_UNREGISTERED",
+          "35",
+          "Gives tips but SEBI has no record of it"
+        ],
+        [
+          "SCAM_REPORTS",
+          "70",
+          "3+ news or complaint reports of it cheating people (only for unproven entities)"
+        ],
+        [
+          "SCAM_REPORTS_FEW",
+          "35",
+          "1-2 news or complaint reports of it cheating people"
+        ],
+        [
+          "PLAY_PUBLISHER",
+          "20",
+          "Play Store publisher is a different company"
+        ],
+        [
+          "PLAY_PERMISSIONS",
+          "10",
+          "Loan app wants contacts, photos, SMS or call logs"
+        ],
+        [
+          "VIRUSTOTAL",
+          "70",
+          "3+ antivirus engines flag the site"
+        ],
+        [
+          "VIRUSTOTAL_FEW",
+          "15",
+          "1-2 antivirus engines flag the site"
+        ],
+        [
+          "URLSCAN_MALICIOUS",
+          "35",
+          "urlscan.io scans marked it malicious"
+        ],
+        [
+          "FEED_LISTED_OFFICIAL",
+          "35",
+          "A phishing list names this official domain; a page may be hacked"
+        ]
+      ]
+    ],
+    "callout": "Catalog text remains in technical English for exact code lookup. APK/short-link/betting rules need continued calibration; no rule weight is a measured fraud probability.|||Exact code lookup ke liye catalog technical English mein hai. APK/short-link/betting rules ko calibration chahiye; weight measured fraud probability nahi.",
+    "sources": "proofgrid.py: RULES; collect(); linkintel.py. Some old labels were qualified here for accurate teaching."
+  },
+  {
+    "title": "Rule catalog / 6|||Rule catalog / 6",
+    "lead": "Declared baseline weights, not a list of findings on every site. Branches can apply context-specific values; actual Hit objects explain each deduction.|||Declared baseline weights hain, har site ke findings nahi. Branches context-specific values use kar sakti hain; actual Hit har deduction explain karta hai.",
+    "sections": [],
+    "diagram": null,
+    "table": [
+      [
+        "Rule ID",
+        "Base",
+        "Meaning / condition"
+      ],
+      [
+        [
+          "USER_SAYS_MONEY",
+          "15",
+          "Requires human-assisted answer and another qualifying hit; broad question alone is not proof."
+        ],
+        [
+          "INSECURE_SENSITIVE_FORM",
+          "60",
+          "Sensitive form submits over HTTP"
+        ],
+        [
+          "SENSITIVE_EXTERNAL_FORM",
+          "35",
+          "Sensitive form sends data to another domain with unverified affiliation"
+        ],
+        [
+          "SENSITIVE_QUERY_STRING",
+          "35",
+          "Sensitive form uses GET and may expose data in URLs"
+        ],
+        [
+          "P2P_UPI_REQUEST",
+          "50",
+          "Legacy catalog entry; not emitted by the current public-surface payment analyzer."
+        ],
+        [
+          "PERSONAL_PHONE_VPA",
+          "35",
+          "Legacy catalog entry; not emitted by the current public-surface payment analyzer."
+        ],
+        [
+          "WHATSAPP_PAY_REDIRECT",
+          "45",
+          "Legacy catalog entry; not emitted by the current public-surface payment analyzer."
+        ],
+        [
+          "EXTERNAL_FORM_SUBMISSION",
+          "45",
+          "Legacy catalog entry; not emitted by the current public-surface payment analyzer."
+        ],
+        [
+          "SHORTENED_LINKS",
+          "30",
+          "Legacy catalog entry; not emitted by the current public-surface payment analyzer."
+        ]
+      ]
+    ],
+    "callout": "Catalog text remains in technical English for exact code lookup. APK/short-link/betting rules need continued calibration; no rule weight is a measured fraud probability.|||Exact code lookup ke liye catalog technical English mein hai. APK/short-link/betting rules ko calibration chahiye; weight measured fraud probability nahi.",
+    "sources": "proofgrid.py: RULES; collect(); linkintel.py. Some old labels were qualified here for accurate teaching."
+  }
+]

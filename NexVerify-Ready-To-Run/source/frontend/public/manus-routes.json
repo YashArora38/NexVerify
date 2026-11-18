@@ -1,0 +1,1 @@
+{"routes":[{"path":"/","title":"NexVerify"},{"path":"/check/:slug","title":"Verification result"}]}
