@@ -1,0 +1,56 @@
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+runtime/
+**/runtime/
+__pycache__/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+**/.pytest_cache/
+tmp/
+**/tmp/
+*.log
+**/data/evidence/
+**/data/ledger/
+**/data/reports/
+**/data/*.db
+**/data/*.db-journal
+**/output/
+
+# NexVerify secrets and runtime data
+NexVerify-Ready-To-Run/data/
+.env
+.env.*
+**/.env
+**/.env.*
+settings.env
+**/settings.env
+*.pem
+*.key
+
+# Secrets
+.env
+**/.env
+.env.*
+**/.env.*
+settings.env
+**/settings.env
+
+# Runtime databases
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Secrets and private keys
+*.pem
+*.key
+
+# Investigation runtime artifacts
+**/data/evidence/
+**/data/ledger/
+**/data/reports/
+**/data/feeds/
+*.lock
